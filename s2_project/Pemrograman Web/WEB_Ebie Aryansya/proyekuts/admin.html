@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KostKita - Panel Manajemen Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#F47B20;--orange-dark:#D96A10;--orange-light:#FFF3E8;--orange-faint:#FFF8F2;
+  --green:#22C55E;--green-dark:#16A34A;--green-bg:#DCFCE7;
+  --red:#EF4444;--red-dark:#DC2626;--red-bg:#FEE2E2;
+  --amber:#F59E0B;--amber-dark:#D97706;--amber-bg:#FEF3C7;
+  --yellow:#EAB308;--yellow-bg:#FEF9C3;
+  --blue:#3B82F6;--blue-bg:#DBEAFE;--blue-dark:#1D4ED8;
+  --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;
+  --gray-300:#D1D5DB;--gray-400:#9CA3AF;--gray-500:#6B7280;
+  --gray-600:#4B5563;--gray-700:#374151;--gray-800:#1F2937;--gray-900:#111827;
+  --white:#FFFFFF;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.06);
+  --shadow-sm:0 1px 4px rgba(0,0,0,.08);
+  --shadow-md:0 4px 12px rgba(0,0,0,.10);
+  --shadow-lg:0 8px 28px rgba(0,0,0,.14);
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gray-50);color:var(--gray-800);font-size:13px;min-height:100vh}
+
+/* ===== NAVBAR ===== */
+nav{background:var(--white);border-bottom:1.5px solid var(--gray-200);padding:0 24px;display:flex;align-items:center;height:62px;gap:0;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:19px;color:var(--gray-900);text-decoration:none;margin-right:24px;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--orange);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.nav-links{display:flex;gap:2px;flex:1;overflow-x:auto}
+.nav-links a{text-decoration:none;color:var(--gray-600);font-weight:500;font-size:13px;padding:6px 13px;border-radius:7px;transition:all .15s;white-space:nowrap}
+.nav-links a:hover{background:var(--gray-100);color:var(--gray-800)}
+.nav-links a.active{color:var(--orange);font-weight:700;background:var(--orange-faint)}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.notif-btn{position:relative;width:36px;height:36px;background:var(--gray-100);border-radius:8px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .15s}
+.notif-btn:hover{background:var(--gray-200)}
+.notif-badge{position:absolute;top:4px;right:4px;width:15px;height:15px;background:var(--red);border-radius:50%;font-size:9px;font-weight:700;color:white;display:flex;align-items:center;justify-content:center;border:2px solid white}
+.nav-user{display:flex;align-items:center;gap:9px;cursor:pointer;padding:6px 12px;border-radius:9px;border:1.5px solid var(--gray-200);font-weight:600;color:var(--gray-700);font-size:12.5px;transition:background .15s;white-space:nowrap}
+.nav-user:hover{background:var(--gray-50)}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#F47B20,#e06b15);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:12px;flex-shrink:0}
+
+/* ===== LAYOUT ===== */
+.page{display:flex;gap:20px;padding:22px 24px;max-width:1400px;margin:0 auto}
+.main-col{flex:1;min-width:0}
+.right-col{width:320px;flex-shrink:0}
+
+/* ===== PAGE HEADER ===== */
+.page-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.page-header h1{font-size:21px;font-weight:800;color:var(--gray-900);flex:1;line-height:1.2}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:9px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:none}
+.btn-primary{background:var(--orange);color:white}
+.btn-primary:hover{background:var(--orange-dark);box-shadow:0 4px 12px rgba(244,123,32,.35);transform:translateY(-1px)}
+.btn-sm{padding:6px 12px;font-size:11.5px}
+.btn-outline{background:white;color:var(--gray-700);border:1.5px solid var(--gray-200)}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-faint)}
+.btn-danger{background:var(--red-bg);color:var(--red-dark);border:1.5px solid #FECACA}
+.btn-danger:hover{background:var(--red);color:white}
+.btn-warning{background:var(--amber-bg);color:var(--amber-dark);border:1.5px solid #FDE68A}
+.btn-warning:hover{background:var(--amber);color:white}
+
+/* ===== FILTER BAR ===== */
+.filter-bar{background:var(--white);border-radius:12px;padding:16px 18px;margin-bottom:18px;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);display:flex;gap:11px;align-items:flex-end;flex-wrap:wrap}
+.filter-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:120px}
+.filter-group label{font-size:10.5px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px}
+.filter-group select,.filter-group input{border:1.5px solid var(--gray-200);border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;color:var(--gray-800);background:var(--white);outline:none;cursor:pointer;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%239CA3AF' d='M5 7L0.5 2h9z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:26px}
+.filter-group select:focus{border-color:var(--orange)}
+.filter-btn{background:var(--orange);color:white;border:none;border-radius:9px;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .15s;flex-shrink:0}
+.filter-btn:hover{background:var(--orange-dark)}
+
+/* ===== UNIT GRID ===== */
+.section-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:14px}
+.unit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.unit-card{background:var(--white);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);border:1.5px solid var(--gray-100);transition:all .2s;animation:fadeUp .3s ease both}
+.unit-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--gray-200)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.unit-card:nth-child(1){animation-delay:.04s}
+.unit-card:nth-child(2){animation-delay:.08s}
+.unit-card:nth-child(3){animation-delay:.12s}
+.unit-card:nth-child(4){animation-delay:.16s}
+.unit-card:nth-child(5){animation-delay:.20s}
+.unit-card:nth-child(6){animation-delay:.24s}
+
+.card-img-wrap{width:100%;height:118px;position:relative;overflow:hidden}
+.card-badge{position:absolute;top:8px;right:8px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;z-index:2}
+.badge-tersedia{background:var(--green);color:white}
+.badge-sisa{background:var(--amber);color:white}
+.badge-terisi{background:var(--red);color:white}
+.badge-perlu{background:#DC2626;color:white}
+.badge-edit{background:rgba(0,0,0,.55);color:white;cursor:pointer}
+.badge-edit:hover{background:var(--orange)}
+
+.card-body{padding:12px}
+.card-room-id{font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:space-between;margin-bottom:1px}
+.card-sub{font-size:11px;color:var(--gray-500);margin-bottom:2px}
+.card-loc{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gray-500);margin-bottom:6px}
+.card-feats{display:flex;gap:8px;margin-bottom:7px}
+.feat{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--gray-600)}
+.card-tarif{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.card-tarif-label{font-size:10px;color:var(--gray-500)}
+.card-price{font-size:13px;font-weight:700;color:var(--orange)}
+.card-price span{font-weight:400;color:var(--gray-400);font-size:10px}
+.edit-icon-btn{background:none;border:none;cursor:pointer;color:var(--orange);font-size:14px;padding:3px 5px;border-radius:5px;transition:background .15s}
+.edit-icon-btn:hover{background:var(--orange-faint)}
+.card-actions{display:flex;gap:7px}
+.card-actions .btn{flex:1;justify-content:center;font-size:11px;padding:7px 6px}
+
+/* ===== SIDEBAR ===== */
+.sidebar-card{background:var(--white);border-radius:12px;padding:16px;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);margin-bottom:16px}
+.sidebar-title{font-size:13.5px;font-weight:700;color:var(--gray-900);margin-bottom:3px}
+.occ-stats{font-size:11px;color:var(--gray-600);margin-bottom:11px;line-height:1.7}
+
+.room-grid-side{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:12px}
+.rc{padding:4px 1px;border:none;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;text-align:center;font-family:inherit;transition:all .15s;position:relative}
+.rc:hover{transform:scale(1.1);z-index:5}
+.rc-av{background:var(--green);color:white}
+.rc-oc{background:var(--red);color:white}
+.rc-pe{background:var(--amber);color:white}
+.rc-fix{background:#D97706;color:white}
+.rc-tooltip{position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:var(--gray-900);color:white;padding:5px 9px;border-radius:6px;font-size:9px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:20}
+.rc:hover .rc-tooltip{opacity:1}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--gray-600)}
+.leg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ===== TX TABLE ===== */
+.tx-wrap{overflow-x:auto;max-height:360px;overflow-y:auto}
+.tx-wrap::-webkit-scrollbar{width:4px;height:4px}
+.tx-wrap::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:3px}
+.tx-table{width:100%;border-collapse:collapse;font-size:10px}
+.tx-table th{position:sticky;top:0;background:var(--white);text-align:left;padding:5px 6px;color:var(--gray-400);font-weight:600;border-bottom:1.5px solid var(--gray-100);white-space:nowrap;font-size:9px;text-transform:uppercase;z-index:2}
+.tx-table td{padding:5px 6px;border-bottom:1px solid var(--gray-100);color:var(--gray-700);white-space:nowrap;vertical-align:middle}
+.tx-table tr:last-child td{border-bottom:none}
+.tx-table tr:hover td{background:var(--gray-50)}
+.pill{display:inline-flex;align-items:center;padding:2px 7px;border-radius:10px;font-size:9px;font-weight:700;white-space:nowrap}
+.pill-lunas{background:var(--green-bg);color:var(--green-dark)}
+.pill-pending{background:var(--amber-bg);color:#92400E}
+.pill-confirmed{background:var(--blue-bg);color:var(--blue-dark)}
+.pill-cancelled{background:var(--red-bg);color:var(--red-dark)}
+.pill-verif{background:var(--amber-bg);color:#92400E;cursor:pointer}
+.pill-cetak{background:var(--blue-bg);color:var(--blue-dark);cursor:pointer}
+.pill-verif:hover{background:var(--amber);color:white}
+.pill-cetak:hover{background:var(--blue);color:white}
+
+/* ===== MODAL ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:14px;padding:24px;width:520px;max-width:94vw;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:scale(.96) translateY(8px);transition:transform .2s}
+.overlay.open .modal{transform:scale(1) translateY(0)}
+.modal-sm{width:360px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:10px}
+.modal-header h3{font-size:16px;font-weight:700;color:var(--gray-900)}
+.modal-close{background:none;border:none;cursor:pointer;font-size:20px;color:var(--gray-400);padding:3px;border-radius:5px;line-height:1;transition:all .15s}
+.modal-close:hover{background:var(--gray-100);color:var(--gray-700)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:11px;font-weight:600;color:var(--gray-600)}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--gray-200);border-radius:7px;padding:9px 11px;font-size:13px;font-family:inherit;color:var(--gray-800);outline:none;transition:border-color .15s;background:white}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--orange)}
+.fg textarea{resize:vertical;min-height:70px}
+.fg input[readonly]{background:var(--gray-50);color:var(--gray-500)}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:14px;border-top:1px solid var(--gray-100)}
+
+/* ===== TOAST ===== */
+.toast-wrap{position:fixed;top:70px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{background:var(--gray-900);color:white;padding:11px 16px;border-radius:9px;font-size:12px;font-weight:600;box-shadow:var(--shadow-lg);animation:toastIn .25s ease;display:flex;align-items:center;gap:8px;max-width:340px;pointer-events:all}
+.toast.success{background:#15803D}
+.toast.error{background:var(--red-dark)}
+.toast.info{background:var(--blue-dark)}
+@keyframes toastIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+
+/* ===== CONFIRM DIALOG ===== */
+.confirm-box{padding:8px 0}
+.confirm-box p{color:var(--gray-700);font-size:13px;line-height:1.6;margin-bottom:4px}
+.confirm-box strong{color:var(--red-dark)}
+
+/* ===== EMPTY STATE ===== */
+.empty-state{grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--gray-400)}
+.empty-state .icon{font-size:40px;margin-bottom:10px}
+.empty-state p{font-size:14px}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--gray-100)}
+::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-icon">🏠</div>
+    KostKita
+  </a>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="switchTab('kamar',this);return false">Kelola Kamar</a>
+    <a href="#" onclick="switchTab('verifikasi',this);return false">Verifikasi Pembayaran</a>
+    <a href="#" onclick="switchTab('pemesanan',this);return false">Pemesanan Global</a>
+    <a href="#" onclick="switchTab('user',this);return false">Manajemen User</a>
+    <a href="#" onclick="switchTab('keuangan',this);return false">Laporan Keuangan</a>
+  </div>
+  <div class="nav-right">
+    <button class="notif-btn" onclick="showNotif()">🔔<span class="notif-badge" id="notifBadge">3</span></button>
+    <div class="nav-user" onclick="toggleUserMenu()">
+      <div class="avatar">SH</div>
+      Halo, EbieA (Admin) ▾
+    </div>
+  </div>
+</nav>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- MAIN COL -->
+  <div class="main-col">
+    <div class="page-header">
+      <h1>Panel Manajemen Kamar &amp; Penghuni KostKita</h1>
+      <button class="btn btn-primary" onclick="openAddUnit()">➕ Tambah Unit Baru</button>
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Filter Kamar Global</label>
+        <select id="fLokasi" onchange="applyFilter()">
+          <option value="">Semua Jenis Kost</option>
+          <option value="Ampera">KostKita - Ampera</option>
+          <option value="Fatmawati">KostKita - Fatmawati</option>
+          <option value="Blok M">KostKita - Blok M</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Tipe Kamar</label>
+        <select id="fTipe" onchange="applyFilter()">
+          <option value="">Semua Tipe</option>
+          <option value="A">Tipe A</option>
+          <option value="B">Tipe B</option>
+          <option value="C">Tipe C</option>
+          <option value="D">Tipe D</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Status Okupansi</label>
+        <select id="fStatus" onchange="applyFilter()">
+          <option value="">Semua Status</option>
+          <option value="Tersedia">Tersedia</option>
+          <option value="Sisa 1 Kamar">Sisa 1 Kamar</option>
+          <option value="Terisi">Terisi</option>
+          <option value="Perlu Perhatian">Perlu Perhatian</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Tipe Pembayaran</label>
+        <select id="fBayar" onchange="applyFilter()">
+          <option value="">Semua</option>
+          <option value="Bulanan">Bulanan</option>
+          <option value="Tahunan">Tahunan</option>
+        </select>
+      </div>
+      <button class="filter-btn" onclick="applyFilter()">🔍</button>
+    </div>
+
+    <div class="section-title">Daftar Unit Kamar &amp; Detail Penghuni</div>
+    <div class="unit-grid" id="unitGrid"></div>
+  </div>
+
+  <!-- RIGHT COL -->
+  <div class="right-col">
+    <!-- Occupancy Panel -->
+    <div class="sidebar-card">
+      <div class="sidebar-title">Panel Okupansi Global</div>
+      <div class="occ-stats" id="occStats">Loading...</div>
+      <div class="room-grid-side" id="roomGridSide"></div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Tersedia</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Terisi</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--amber)"></div>Dipesan</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--yellow)"></div>Dalam Perbaikan</div>
+      </div>
+    </div>
+
+    <!-- Transactions -->
+    <div class="sidebar-card">
+      <div class="sidebar-title" style="margin-bottom:12px">Daftar Transaksi &amp; Pemesanan Global</div>
+      <div class="tx-wrap">
+        <table class="tx-table">
+          <thead>
+            <tr>
+              <th>ID Transk.</th><th>Nama Penghuni</th><th>Kamar</th><th>Check-in</th>
+              <th>Durasi</th><th>Total Bayar</th><th>Status Bayar</th>
+              <th>Status Pemesanan</th><th>Status Dikonfirmasi</th>
+            </tr>
+          </thead>
+          <tbody id="txBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD/EDIT UNIT MODAL ===== -->
+<div class="overlay" id="modalUnit">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalUnitTitle">Tambah Unit Baru</h3>
+      <button class="modal-close" onclick="closeOverlay('modalUnit')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="fg"><label>Nomor Kamar *</label><input id="uId" placeholder="cth. A101"></div>
+      <div class="fg"><label>Tipe Kamar</label>
+        <select id="uTipe"><option>A</option><option>B</option><option>C</option><option>D</option></select>
+      </div>
+      <div class="fg"><label>Lokasi</label>
+        <select id="uLokasi"><option>Ampera</option><option>Fatmawati</option><option>Blok M</option></select>
+      </div>
+      <div class="fg"><label>Fasilitas</label>
+        <select id="uFasilitas">
+          <option>AC, Kamar Mandi Dalam</option>
+          <option>AC, Kamar Mandi Luar</option>
+          <option>Tanpa AC, KM Dalam</option>
+          <option>Tanpa AC, KM Luar</option>
+        </select>
+      </div>
+      <div class="fg"><label>Harga / Bulan (Rp)</label><input type="number" id="uHarga" placeholder="2100000"></div>
+      <div class="fg"><label>Tipe Pembayaran</label>
+        <select id="uBayar"><option>Bulanan</option><option>Tahunan</option></select>
+      </div>
+      <div class="fg"><label>Status Kamar</label>
+        <select id="uStatus">
+          <option>Tersedia</option><option>Terisi</option>
+          <option>Sisa 1 Kamar</option><option>Perlu Perhatian</option>
+        </select>
+      </div>
+      <div class="fg"><label>Nama Penghuni</label><input id="uPenghuni" placeholder="Nama penghuni (jika ada)"></div>
+      <div class="fg"><label>No. HP Penghuni</label><input id="uHp" placeholder="08xx-xxxx-xxxx"></div>
+      <div class="fg"><label>Tgl Check-in</label><input type="date" id="uCheckin"></div>
+      <div class="fg full"><label>Catatan / Keterangan</label><textarea id="uCatatan" placeholder="Catatan tambahan..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOverlay('modalUnit')">Batal</button>
+      <button class="btn btn-primary" onclick="saveUnit()">💾 Simpan Unit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT STATUS MODAL ===== -->
+<div class="overlay" id="modalStatus">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Edit Status — <span id="statusRoomId" style="color:var(--orange)"></span></h3>
+      <button class="modal-close" onclick="closeOverlay('modalStatus')">✕</button>
+    </div>
+    <div class="form-grid" style="grid-template-columns:1fr">
+      <div class="fg"><label>Status Baru</label>
+        <select id="sNewStatus">
+          <option>Tersedia</option><option>Terisi</option>
+          <option>Sisa 1 Kamar</option><option>Perlu Perhatian</option>
+        </select>
+      </div>
+      <div class="fg"><label>Nama Penghuni</label><input id="sPenghuni" placeholder="Kosongkan jika tidak ada"></div>
+      <div class="fg"><label>No. HP Penghuni</label><input id="sHp" placeholder="08xx-xxxx-xxxx"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOverlay('modalStatus')">Batal</button>
+      <button class="btn btn-primary" onclick="saveStatus()">✔ Simpan Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LAPORAN PERBAIKAN MODAL ===== -->
+<div class="overlay" id="modalLaporan">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Laporan Perbaikan — <span id="lRoomIdLabel" style="color:var(--orange)"></span></h3>
+      <button class="modal-close" onclick="closeOverlay('modalLaporan')">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="fg"><label>Nomor Kamar</label><input id="lRoomId" readonly></div>
+      <div class="fg"><label>Tanggal Lapor</label><input type="date" id="lTanggal"></div>
+      <div class="fg"><label>Jenis Kerusakan</label>
+        <select id="lJenis">
+          <option>Listrik / Konsleting</option><option>Plumbing / Air</option>
+          <option>Atap / Dinding / Lantai</option><option>AC / Kipas Angin</option>
+          <option>Pintu / Jendela / Kunci</option><option>Furniture</option><option>Lainnya</option>
+        </select>
+      </div>
+      <div class="fg"><label>Tingkat Prioritas</label>
+        <select id="lPrioritas">
+          <option>Rendah</option><option>Sedang</option><option>Tinggi</option><option>Darurat</option>
+        </select>
+      </div>
+      <div class="fg full"><label>Deskripsi Lengkap Kerusakan</label>
+        <textarea id="lDesk" placeholder="Jelaskan kerusakan secara detail..."></textarea>
+      </div>
+      <div class="fg"><label>Nama Teknisi (opsional)</label><input id="lTeknisi" placeholder="Nama teknisi"></div>
+      <div class="fg"><label>Estimasi Biaya (Rp)</label><input type="number" id="lBiaya" placeholder="500000"></div>
+      <div class="fg full"><label>Catatan Tambahan</label>
+        <textarea id="lCatatan" placeholder="Catatan lain..." style="min-height:50px"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOverlay('modalLaporan')">Batal</button>
+      <button class="btn btn-primary" onclick="saveLaporan()">📋 Kirim Laporan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DETAIL PENGHUNI MODAL ===== -->
+<div class="overlay" id="modalDetail">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Detail Penghuni — <span id="detailRoomId" style="color:var(--orange)"></span></h3>
+      <button class="modal-close" onclick="closeOverlay('modalDetail')">✕</button>
+    </div>
+    <div id="detailContent" style="display:grid;grid-template-columns:1fr 1fr;gap:14px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOverlay('modalDetail')">Tutup</button>
+      <button class="btn btn-primary" onclick="editFromDetail()">✏️ Edit Unit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DELETE CONFIRM MODAL ===== -->
+<div class="overlay" id="modalConfirm">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Konfirmasi Hapus</h3>
+      <button class="modal-close" onclick="closeOverlay('modalConfirm')">✕</button>
+    </div>
+    <div class="confirm-box">
+      <p>Apakah Anda yakin ingin menghapus unit <strong id="confirmRoomId"></strong>?</p>
+      <p style="margin-top:6px;font-size:12px;color:var(--gray-500)">Tindakan ini tidak dapat dibatalkan.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOverlay('modalConfirm')">Batal</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">🗑 Hapus Unit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VERIFIKASI PEMBAYARAN MODAL ===== -->
+<div class="overlay" id="modalVerif">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <h3>Verifikasi Pembayaran</h3>
+      <button class="modal-close" onclick="closeOverlay('modalVerif')">✕</button>
+    </div>
+    <div class="form-grid" style="grid-template-columns:1fr">
+      <div class="fg"><label>ID Transaksi</label><input id="vTxId" readonly></div>
+      <div class="fg"><label>Nama Penghuni</label><input id="vPenghuni" readonly></div>
+      <div class="fg"><label>Total Bayar</label><input id="vTotal" readonly></div>
+      <div class="fg"><label>Status Verifikasi</label>
+        <select id="vStatus">
+          <option value="Lunas">✅ Lunas / Terverifikasi</option>
+          <option value="Pending">⏳ Masih Pending</option>
+          <option value="Ditolak">❌ Ditolak / Invalid</option>
+        </select>
+      </div>
+      <div class="fg"><label>Catatan Admin</label><textarea id="vCatatan" placeholder="Catatan verifikasi..." style="min-height:55px"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeOverlay('modalVerif')">Batal</button>
+      <button class="btn btn-primary" onclick="saveVerif()">✔ Konfirmasi</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+let units = [
+  {id:'A101',tipe:'A',lokasi:'Brother',fasilitas:'AC, Kamar Mandi Dalam',harga:2100000,bayar:'Bulanan',status:'Tersedia',penghuni:'',hp:'',checkin:'',catatan:''},
+  {id:'B201',tipe:'B',lokasi:'Brother',fasilitas:'AC, Kamar Mandi Dalam',harga:2100000,bayar:'Bulanan',status:'Sisa 1 Kamar',penghuni:'Rina Sari',hp:'0812-3456-7890',checkin:'2024-03-01',catatan:''},
+  {id:'C301',tipe:'C',lokasi:'Brother',fasilitas:'AC, Kamar Mandi Dalam',harga:2100000,bayar:'Bulanan',status:'Tersedia',penghuni:'',hp:'',checkin:'',catatan:''},
+  {id:'A102',tipe:'A',lokasi:'Brother',fasilitas:'AC, Kamar Mandi Dalam',harga:2100000,bayar:'Bulanan',status:'Terisi',penghuni:'Budi Wibowo',hp:'0813-9876-5432',checkin:'2024-02-15',catatan:''},
+  {id:'A102',tipe:'A',lokasi:'Brother',fasilitas:'AC, Kamar Mandi Dalam',harga:2100000,bayar:'Bulanan',status:'Terisi',penghuni:'Dewi Kartika',hp:'0814-1122-3344',checkin:'2024-01-10',catatan:'AC rusak perlu cek'},
+  {id:'B201',tipe:'B',lokasi:'Brother',fasilitas:'AC, Kamar Mandi Dalam',harga:2100000,bayar:'Bulanan',status:'Perlu Perhatian',penghuni:'Agus Setiawan',hp:'0815-5566-7788',checkin:'2024-03-20',catatan:'Kran bocor, perlu perbaikan segera'},
+  {id:'B201',tipe:'B',lokasi:'Saudara',fasilitas:'AC, Kamar Mandi Dalam',harga:1900000,bayar:'Bulanan',status:'Tersedia',penghuni:'',hp:'',checkin:'',catatan:''},
+  {id:'C301',tipe:'C',lokasi:'Saudara',fasilitas:'AC, Kamar Mandi Dalam',harga:1900000,bayar:'Bulanan',status:'Sisa 1 Kamar',penghuni:'Siti Nuraini',hp:'0816-2233-4455',checkin:'2024-04-01',catatan:''},
+  {id:'C301',tipe:'C',lokasi:'Saudara',fasilitas:'AC, Kamar Mandi Dalam',harga:2300000,bayar:'Bulanan',status:'Terisi',penghuni:'Ahmad Fauzi',hp:'0817-6677-8899',checkin:'2024-02-01',catatan:''},
+];
+
+let transactions = [
+  {id:'20260329-01',penghuni:'Majid',kamar:'A101',checkin:'29/03/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Lunas',pemesanan:'Confirmed',aksi:'Verifikasi Pembayaran'},
+  {id:'20260329-02',penghuni:'Majid',kamar:'A101',checkin:'29/03/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Lunas',pemesanan:'Confirmed',aksi:'Cetak Invois'},
+  {id:'20260329-03',penghuni:'Majid',kamar:'A101',checkin:'29/03/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Lunas',pemesanan:'Confirmed',aksi:'Cetak Invois'},
+  {id:'20260329-04',penghuni:'Majid',kamar:'A101',checkin:'29/03/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Lunas',pemesanan:'Confirmed',aksi:'Cetak Invois'},
+  {id:'20260329-05',penghuni:'Majid',kamar:'B201',checkin:'01/04/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Pending',pemesanan:'Pending',aksi:'Verifikasi Pembayaran'},
+  {id:'20260329-06',penghuni:'Majid',kamar:'A102',checkin:'15/04/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Lunas',pemesanan:'Confirmed',aksi:'Cetak Invois'},
+  {id:'20260329-07',penghuni:'Majid',kamar:'A102',checkin:'10/04/2026',durasi:'1 month',total:'Rp 2.100.000',bayar:'Lunas',pemesanan:'Confirmed',aksi:'Cetak Invois'},
+  {id:'20260329-08',penghuni:'Majid',kamar:'C301',checkin:'01/04/2026',durasi:'1 month',total:'Rp 1.900.000',bayar:'Pending',pemesanan:'Pending',aksi:'Verifikasi Pembayaran'},
+];
+
+let editIdx = null, deleteIdx = null, statusIdx = null, detailIdx = null, verifTxId = null;
+
+// ==================== SVG ROOMS ====================
+const pal = [
+  ['#E8F5E9','#2E7D32'],['#FFF3E0','#BF360C'],['#E3F2FD','#0D47A1'],
+  ['#F3E5F5','#4A148C'],['#E0F2F1','#004D40'],['#FBE9E7','#BF360C'],
+  ['#E8EAF6','#1A237E'],['#F1F8E9','#33691E'],['#FCE4EC','#880E4F'],
+];
+function roomSVG(i, status) {
+  const p = pal[i % pal.length];
+  const bg = status==='Terisi'?'#FFF5F5':status==='Perlu Perhatian'?'#FFFBEB':p[0];
+  const ac = status==='Terisi'?'#DC2626':status==='Perlu Perhatian'?'#D97706':p[1];
+  return `<svg viewBox="0 0 200 118" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:118px;display:block">
+    <rect width="200" height="118" fill="${bg}"/>
+    <rect x="0" y="86" width="200" height="32" fill="${ac}18"/>
+    <rect x="125" y="14" width="54" height="42" rx="4" fill="white" opacity=".55"/>
+    <line x1="152" y1="14" x2="152" y2="56" stroke="${ac}44" stroke-width="1.5"/>
+    <line x1="125" y1="35" x2="179" y2="35" stroke="${ac}44" stroke-width="1.5"/>
+    <rect x="14" y="60" width="88" height="34" rx="5" fill="${ac}55"/>
+    <rect x="14" y="60" width="88" height="16" rx="5" fill="${ac}88"/>
+    <rect x="18" y="63" width="35" height="9" rx="3" fill="white" opacity=".5"/>
+    <rect x="58" y="63" width="35" height="9" rx="3" fill="white" opacity=".5"/>
+    <rect x="154" y="70" width="30" height="20" rx="3" fill="${ac}44"/>
+    <rect x="156" y="72" width="26" height="12" rx="2" fill="white" opacity=".3"/>
+    <line x1="169" y1="70" x2="169" y2="54" stroke="${ac}77" stroke-width="1.5"/>
+    <ellipse cx="169" cy="52" rx="9" ry="5" fill="${ac}66"/>
+    ${status==='Perlu Perhatian'?'<text x="30" y="22" font-size="16">⚠️</text>':''}
+  </svg>`;
+}
+
+// ==================== RENDER UNITS ====================
+function renderUnits(data) {
+  data = data || units;
+  const g = document.getElementById('unitGrid');
+  g.innerHTML = '';
+  if(!data.length){
+    g.innerHTML = '<div class="empty-state"><div class="icon">🏠</div><p>Tidak ada unit ditemukan</p></div>';
+    return;
+  }
+  const bmap = {Tersedia:'badge-tersedia','Sisa 1 Kamar':'badge-sisa',Terisi:'badge-terisi','Perlu Perhatian':'badge-perlu'};
+  data.forEach((u, vi) => {
+    const ri = units.indexOf(u);
+    const bc = bmap[u.status]||'badge-tersedia';
+    const pr = Number(u.harga).toLocaleString('id-ID');
+    const isTerisi = u.status==='Terisi';
+    const isSisa = u.status==='Sisa 1 Kamar';
+    const isPerlu = u.status==='Perlu Perhatian';
+    const isTersedia = u.status==='Tersedia';
+
+    let actions = '';
+    if(isTerisi){
+      actions = `<button class="btn btn-outline btn-sm" style="flex:1;justify-content:center" onclick="openEditStatus(${ri})">Edit Status ▾</button>
+                 <button class="btn btn-outline btn-sm" onclick="openDetail(${ri})" title="Detail">👤</button>
+                 <button class="btn btn-danger btn-sm" onclick="openConfirmDelete(${ri})" title="Hapus">🗑</button>`;
+    } else if(isPerlu){
+      actions = `<button class="btn btn-warning btn-sm" style="flex:1;justify-content:center" onclick="openLaporan('${u.id}',${ri})">🔧 Laporan Perbaikan</button>
+                 <button class="btn btn-danger btn-sm" onclick="openConfirmDelete(${ri})" title="Hapus">🗑</button>`;
+    } else {
+      actions = `<button class="btn btn-outline btn-sm" style="flex:1;justify-content:center" onclick="openEditUnit(${ri})">✏️ Edit Unit</button>
+                 <button class="btn btn-danger btn-sm" onclick="openConfirmDelete(${ri})" title="Hapus">🗑</button>`;
+    }
+
+    g.innerHTML += `<div class="unit-card" style="animation-delay:${vi*0.05}s">
+      <div class="card-img-wrap">
+        ${roomSVG(ri, u.status)}
+        <span class="card-badge ${bc}" style="position:absolute;top:8px;right:8px">${u.status}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-room-id">
+          <span>${u.id}</span>
+          ${u.penghuni?`<span style="font-size:10px;color:var(--gray-500);font-weight:500">👤 ${u.penghuni}</span>`:''}
+        </div>
+        <div class="card-sub">KostKita - ${u.lokasi} (Tipe ${u.tipe}, AC)</div>
+        <div class="card-loc">📍 KostKita - ${u.lokasi}</div>
+        <div class="card-feats">
+          <div class="feat">❄️ AC</div>
+          <div class="feat">📶 WiFi</div>
+          <div class="feat">🚿 K.Mandi</div>
+        </div>
+        <div class="card-tarif">
+          <div>
+            <div class="card-tarif-label">Tarif Saat Ini:</div>
+            <div class="card-price">Rp ${pr} <span>/bulan</span></div>
+          </div>
+          <button class="edit-icon-btn" onclick="openEditUnit(${ri})" title="Edit">✏️</button>
+        </div>
+        <div class="card-actions">${actions}</div>
+      </div>
+    </div>`;
+  });
+}
+
+// ==================== ROOM GRID SIDEBAR ====================
+function renderRoomGrid() {
+  const rg = document.getElementById('roomGridSide');
+  rg.innerHTML = '';
+  const sm = {Tersedia:'rc-av','Sisa 1 Kamar':'rc-pe',Terisi:'rc-oc','Perlu Perhatian':'rc-fix'};
+  units.forEach(u => {
+    const c = sm[u.status]||'rc-av';
+    rg.innerHTML += `<div class="rc ${c}"><span>${u.id}</span><span class="rc-tooltip">${u.id}: ${u.status}${u.penghuni?' | '+u.penghuni:''}</span></div>`;
+  });
+  // Stats
+  const av = units.filter(u=>u.status==='Tersedia').length;
+  const oc = units.filter(u=>u.status==='Terisi').length;
+  const pe = units.filter(u=>u.status==='Sisa 1 Kamar').length;
+  const fx = units.filter(u=>u.status==='Perlu Perhatian').length;
+  document.getElementById('occStats').innerHTML =
+    `Tersedia: <strong>${av}</strong> | Terisi: <strong>${oc}</strong> | Dipesan: <strong>${pe}</strong> | Dalam Perbaikan: <strong>${fx}</strong> | Total: <strong>${units.length}</strong>`;
+}
+
+// ==================== TRANSACTIONS ====================
+function renderTx() {
+  const tb = document.getElementById('txBody');
+  tb.innerHTML = '';
+  transactions.forEach(t => {
+    const bc = t.bayar==='Lunas'?'pill-lunas':'pill-pending';
+    const pc = t.pemesanan==='Confirmed'?'pill-confirmed':'pill-pending';
+    const isVerif = t.aksi.includes('Verifikasi');
+    const ac = isVerif?'pill-verif':'pill-cetak';
+    tb.innerHTML += `<tr>
+      <td><strong style="font-size:9px">${t.id}</strong></td>
+      <td>${t.penghuni}</td><td>${t.kamar}</td><td>${t.checkin}</td><td>${t.durasi}</td>
+      <td><strong>${t.total}</strong></td>
+      <td><span class="pill ${bc}">${t.bayar}</span></td>
+      <td><span class="pill ${pc}">${t.pemesanan}</span></td>
+      <td><span class="pill ${ac}" onclick="${isVerif?`openVerif('${t.id}')`:`cetakInvois('${t.id}')`}">${t.aksi}</span></td>
+    </tr>`;
+  });
+}
+
+// ==================== FILTER ====================
+function applyFilter() {
+  const lok = document.getElementById('fLokasi').value;
+  const tip = document.getElementById('fTipe').value;
+  const sta = document.getElementById('fStatus').value;
+  const bay = document.getElementById('fBayar').value;
+  const filtered = units.filter(u =>
+    (!lok || u.lokasi.includes(lok)) &&
+    (!tip || u.tipe === tip) &&
+    (!sta || u.status === sta) &&
+    (!bay || u.bayar === bay)
+  );
+  renderUnits(filtered);
+}
+
+// ==================== MODALS ====================
+function openOverlay(id) { document.getElementById(id).classList.add('open'); }
+function closeOverlay(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(o =>
+  o.addEventListener('click', e => { if(e.target===o) o.classList.remove('open'); })
+);
+
+// ADD UNIT
+function openAddUnit() {
+  editIdx = null;
+  document.getElementById('modalUnitTitle').textContent = 'Tambah Unit Baru';
+  ['uId','uPenghuni','uHp','uCatatan'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('uHarga').value = '';
+  document.getElementById('uTipe').value = 'A';
+  document.getElementById('uLokasi').value = 'Ampera';
+  document.getElementById('uFasilitas').value = 'AC, Kamar Mandi Dalam';
+  document.getElementById('uBayar').value = 'Bulanan';
+  document.getElementById('uStatus').value = 'Tersedia';
+  document.getElementById('uCheckin').value = '';
+  document.getElementById('uId').readOnly = false;
+  openOverlay('modalUnit');
+}
+
+// EDIT UNIT
+function openEditUnit(idx) {
+  editIdx = idx;
+  const u = units[idx];
+  document.getElementById('modalUnitTitle').textContent = `Edit Unit ${u.id}`;
+  document.getElementById('uId').value = u.id;
+  document.getElementById('uId').readOnly = true;
+  document.getElementById('uTipe').value = u.tipe;
+  document.getElementById('uLokasi').value = u.lokasi;
+  document.getElementById('uFasilitas').value = u.fasilitas;
+  document.getElementById('uHarga').value = u.harga;
+  document.getElementById('uBayar').value = u.bayar;
+  document.getElementById('uStatus').value = u.status;
+  document.getElementById('uPenghuni').value = u.penghuni;
+  document.getElementById('uHp').value = u.hp;
+  document.getElementById('uCheckin').value = u.checkin;
+  document.getElementById('uCatatan').value = u.catatan;
+  openOverlay('modalUnit');
+}
+
+function saveUnit() {
+  const id = document.getElementById('uId').value.trim();
+  if(!id) { toast('Nomor kamar wajib diisi!','error'); return; }
+  const u = {
+    id, tipe: document.getElementById('uTipe').value,
+    lokasi: document.getElementById('uLokasi').value,
+    fasilitas: document.getElementById('uFasilitas').value,
+    harga: parseInt(document.getElementById('uHarga').value)||2100000,
+    bayar: document.getElementById('uBayar').value,
+    status: document.getElementById('uStatus').value,
+    penghuni: document.getElementById('uPenghuni').value.trim(),
+    hp: document.getElementById('uHp').value.trim(),
+    checkin: document.getElementById('uCheckin').value,
+    catatan: document.getElementById('uCatatan').value.trim(),
+  };
+  if(editIdx !== null) {
+    units[editIdx] = u;
+    toast(`✅ Unit ${u.id} berhasil diperbarui`,'success');
+  } else {
+    units.push(u);
+    toast(`✅ Unit ${u.id} berhasil ditambahkan`,'success');
+  }
+  closeOverlay('modalUnit');
+  renderUnits(); renderRoomGrid();
+}
+
+// EDIT STATUS
+function openEditStatus(idx) {
+  statusIdx = idx;
+  const u = units[idx];
+  document.getElementById('statusRoomId').textContent = u.id;
+  document.getElementById('sNewStatus').value = u.status;
+  document.getElementById('sPenghuni').value = u.penghuni;
+  document.getElementById('sHp').value = u.hp;
+  openOverlay('modalStatus');
+}
+function saveStatus() {
+  const u = units[statusIdx];
+  u.status = document.getElementById('sNewStatus').value;
+  u.penghuni = document.getElementById('sPenghuni').value;
+  u.hp = document.getElementById('sHp').value;
+  toast(`✅ Status ${u.id} diperbarui ke "${u.status}"`, 'success');
+  closeOverlay('modalStatus');
+  renderUnits(); renderRoomGrid();
+}
+
+// LAPORAN
+function openLaporan(roomId, idx) {
+  document.getElementById('lRoomIdLabel').textContent = roomId;
+  document.getElementById('lRoomId').value = roomId;
+  document.getElementById('lTanggal').value = new Date().toISOString().split('T')[0];
+  document.getElementById('lDesk').value = idx !== undefined ? units[idx].catatan : '';
+  document.getElementById('lTeknisi').value = '';
+  document.getElementById('lBiaya').value = '';
+  document.getElementById('lCatatan').value = '';
+  openOverlay('modalLaporan');
+}
+function saveLaporan() {
+  const room = document.getElementById('lRoomId').value;
+  const jenis = document.getElementById('lJenis').value;
+  const prio = document.getElementById('lPrioritas').value;
+  toast(`📋 Laporan perbaikan ${room} (${jenis}) prioritas ${prio} berhasil dikirim`,'success');
+  closeOverlay('modalLaporan');
+}
+
+// DETAIL PENGHUNI
+function openDetail(idx) {
+  detailIdx = idx;
+  const u = units[idx];
+  document.getElementById('detailRoomId').textContent = u.id;
+  const fields = [
+    ['Nomor Kamar', u.id], ['Tipe Kamar', `Tipe ${u.tipe}`],
+    ['Lokasi', `KostKita - ${u.lokasi}`], ['Fasilitas', u.fasilitas],
+    ['Harga/Bulan', `Rp ${Number(u.harga).toLocaleString('id-ID')}`],
+    ['Tipe Pembayaran', u.bayar], ['Status Kamar', u.status],
+    ['Nama Penghuni', u.penghuni||'-'], ['No. HP', u.hp||'-'],
+    ['Tgl Check-in', u.checkin||'-'], ['Catatan', u.catatan||'-'],
+  ];
+  document.getElementById('detailContent').innerHTML = fields.map(([l,v]) =>
+    `<div class="fg"><label>${l}</label><input readonly value="${v}" style="background:var(--gray-50);color:var(--gray-700)"></div>`
+  ).join('');
+  openOverlay('modalDetail');
+}
+function editFromDetail() {
+  closeOverlay('modalDetail');
+  openEditUnit(detailIdx);
+}
+
+// DELETE
+function openConfirmDelete(idx) {
+  deleteIdx = idx;
+  document.getElementById('confirmRoomId').textContent = units[idx].id;
+  openOverlay('modalConfirm');
+}
+function confirmDelete() {
+  const id = units[deleteIdx].id;
+  units.splice(deleteIdx, 1);
+  toast(`🗑 Unit ${id} berhasil dihapus`,'error');
+  closeOverlay('modalConfirm');
+  renderUnits(); renderRoomGrid();
+}
+
+// VERIF PEMBAYARAN
+function openVerif(txId) {
+  verifTxId = txId;
+  const t = transactions.find(x => x.id === txId);
+  if(!t) return;
+  document.getElementById('vTxId').value = t.id;
+  document.getElementById('vPenghuni').value = t.penghuni;
+  document.getElementById('vTotal').value = t.total;
+  document.getElementById('vStatus').value = t.bayar === 'Lunas' ? 'Lunas' : 'Pending';
+  document.getElementById('vCatatan').value = '';
+  openOverlay('modalVerif');
+}
+function saveVerif() {
+  const t = transactions.find(x => x.id === verifTxId);
+  if(t) {
+    const ns = document.getElementById('vStatus').value;
+    t.bayar = ns;
+    t.pemesanan = ns === 'Lunas' ? 'Confirmed' : ns === 'Ditolak' ? 'Cancelled' : 'Pending';
+    t.aksi = ns === 'Lunas' ? 'Cetak Invois' : 'Verifikasi Pembayaran';
+    toast(`✅ Transaksi ${verifTxId} berhasil diverifikasi sebagai "${ns}"`, 'success');
+  }
+  closeOverlay('modalVerif');
+  renderTx();
+}
+function cetakInvois(txId) {
+  toast(`🖨 Mencetak invoice transaksi ${txId}...`, 'info');
+}
+
+// ==================== TOAST ====================
+function toast(msg, type='success') {
+  const w = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  w.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateX(50px)'; t.style.transition='all .3s'; }, 3000);
+  setTimeout(() => t.remove(), 3400);
+}
+
+// ==================== NAV TABS ====================
+function switchTab(tab, el) {
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+  const msgs = {
+    verifikasi:'💳 Halaman Verifikasi Pembayaran',
+    pemesanan:'📋 Halaman Pemesanan Global',
+    user:'👥 Halaman Manajemen User',
+    keuangan:'💰 Halaman Laporan Keuangan',
+  };
+  if(msgs[tab]) toast(`${msgs[tab]} — segera hadir!`,'info');
+}
+
+function showNotif() {
+  document.getElementById('notifBadge').style.display='none';
+  toast('🔔 3 notifikasi: 2 pembayaran pending, 1 laporan perbaikan baru','info');
+}
+function toggleUserMenu() {
+  toast('👤 Menu profil admin','info');
+}
+
+// ==================== INIT ====================
+renderUnits();
+renderRoomGrid();
+renderTx();
+</script>
+</body>
+</html>

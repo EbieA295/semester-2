@@ -1,0 +1,10 @@
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-03-15 16:24 WIB
+Nmap scan report for _gateway (192.168.0.1)
+Host is up (0.013s latency).
+Nmap scan report for 192.168.0.101
+Host is up (0.0061s latency).
+Nmap scan report for 192.168.0.102
+Host is up (0.0069s latency).
+Nmap scan report for nyauu132-TravelMate-B117-M (192.168.0.103)
+Host is up (0.0031s latency).
+Nmap done: 256 IP addresses (4 hosts up) scanned in 3.09 seconds

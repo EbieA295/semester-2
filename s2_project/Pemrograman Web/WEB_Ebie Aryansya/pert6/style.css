@@ -1,0 +1,210 @@
+/* ========= RESET DASAR ========= */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  color: #222;
+  line-height: 1.6;
+}
+
+
+/* ========= HEADER ========= */
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+}
+
+header h1 {
+  margin-bottom: 10px;
+  font-size: 2em;
+}
+
+header img{
+  alt: "Profil";
+  width: 200px;
+  border-radius: 50%;
+  border: 2px solid #333;
+}
+
+
+/* ========= NAVBAR ========= */
+nav {
+  background-color: #555;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px;
+  display: inline-block;
+  transition: background 0.3s;
+}
+
+nav ul li a:hover {
+  background-color: #777;
+  border-radius: 5px;
+}
+
+
+/* ========= SECTION UMUM ========= */
+section {
+  width: 80%;
+  margin: 30px auto;
+  padding: 40px;
+
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+section:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+section h2 {
+  font-size: 1.6em;
+  color: #222;
+  border-left: 5px solid #555;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+
+/* ========= HOME ========= */
+#home {
+  text-align: center;
+}
+
+#home p {
+  font-size: 1.1em;
+  color: #444;
+}
+
+
+/* ========= TENTANG ========= */
+#tentang {
+  text-align: center;
+}
+
+#tentang table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#tentang th,
+#tentang td {
+  padding: 10px;
+  border: 1px solid #999;
+  text-align: left;
+}
+
+#tentang th {
+  background-color: #eee;
+  width: 30%;
+}
+
+
+/* ========= RIWAYAT ========= */
+#riwayat h2 {
+  text-align: center;
+}
+
+#riwayat table {
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#riwayat th,
+#riwayat td {
+  padding: 12px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+#riwayat th {
+  background-color: #333;
+  color: #fff;
+}
+
+#riwayat tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#riwayat tr:hover {
+  background-color: #ddd;
+}
+
+
+/* ========= HOBI ========= */
+#hobi h2 {
+  text-align: center;
+}
+
+.hobi-list {
+  list-style: none;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.hobi-list li {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.hobi-list img {
+  width: 120px;              
+  height: 120px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-right: 15px;
+}
+
+.hobi-list span {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #222;
+}
+
+
+/* ========= KEAHLIAN ========= */
+.keahlian-list {
+  max-width: 400px;
+  margin: 20px auto;
+  padding-left: 20px;
+}
+
+.keahlian-list li {
+  margin: 8px 0;
+}

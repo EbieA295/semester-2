@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Layout CSS - Fakultas UNP</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        /* Reset dasar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            background: #f4f4f4;
+        }
+
+        /* Header */
+        header {
+            background: #444;
+            color: white;
+            text-align: center;
+            padding: 35px;
+        }
+
+        /* Layout utama */
+        section {
+            display: flex;
+            max-width: 1100px;
+            margin: 20px auto;
+            gap: 20px;
+        }
+
+        /* Menu kiri */
+        nav {
+            width: 30%;
+            background: #eee;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-bottom: 8px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #007bff;
+        }
+
+        /* Konten kanan */
+        .konten {
+            width: 70%;
+        }
+
+        /* Gambar */
+        .gambar img {
+            width: 100%;
+            border-radius: 6px;
+        }
+
+        /* Artikel */
+        article {
+            background: white;
+            padding: 20px;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+
+        /* Footer */
+        footer {
+            background: #555;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            section {
+                flex-direction: column;
+            }
+
+            nav,
+            .konten {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2>Fakultas di Universitas Negeri Padang</h2>
+    </header>
+
+    <section>
+
+        <nav>
+            <ul>
+                <li><a href="#">Fakultas Teknik</a></li>
+                <li><a href="#">Fakultas Ilmu Pendidikan</a></li>
+                <li><a href="#">Fakultas Matematika dan Ilmu Pengetahuan Alam</a></li>
+                <li><a href="#">Fakultas Ekonomi dan Bisnis</a></li>
+                <li><a href="#">Fakultas Ilmu Keolahragaan</a></li>
+                <li><a href="#">Fakultas Bahasa dan Seni</a></li>
+                <li><a href="#">Fakultas Ilmu Sosial</a></li>
+                <li><a href="#">Fakultas Psikologi dan Kesehatan</a></li>
+                <li><a href="#">Fakultas Perhotelan dan Pariwisata</a></li>
+                <li><a href="#">Fakultas Kedokteran</a></li>
+            </ul>
+        </nav>
+
+        <!-- Konten kanan -->
+        <div class="konten">
+
+            <div class="gambar">
+                <img src="fotounp.webp" alt="Universitas Negeri Padang">
+            </div>
+
+            <article>
+                <h1>Universitas Negeri Padang</h1>
+
+                <p>
+                    Universitas Negeri Padang (UNP) merupakan salah satu perguruan tinggi
+                    negeri yang berada di Kota Padang, Sumatera Barat. Universitas ini
+                    memiliki berbagai fakultas yang menyelenggarakan pendidikan di bidang
+                    kependidikan maupun nonkependidikan.
+                </p>
+
+                <p>
+                    Dengan fasilitas pendidikan yang lengkap serta tenaga pengajar yang
+                    profesional, UNP berkomitmen menghasilkan lulusan yang berkualitas
+                    dan mampu bersaing di tingkat nasional maupun internasional.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© Oleh EbieA 2026</p>
+    </footer>
+
+</body>
+</html>
