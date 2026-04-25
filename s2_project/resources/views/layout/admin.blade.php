@@ -29,7 +29,7 @@
 
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -38,28 +38,50 @@
 
             <hr class="sidebar-divider my-0">
 
-                <li class="nav-item">
+            <li class="nav-item">
                 <a class="nav-link" href="/admin">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard Admin</span>
+                    <span>Dashboard</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="/petugas">
+                <a class="nav-link" href="/dokter">
                     <i class="fas fa-fw fa-user-md"></i>
-                    <span>Dashboard Petugas</span>
+                    <span>Dokter</span>
                 </a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="/pasien">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Dashboard Pasien</span>
+                <a class="nav-link" href="/pendaftaran">
+                    <i class="fas fa-fw fa-notes-medical"></i>
+                    <span>Pendaftaran</span>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/laporan">
+                    <i class="fas fa-fw fa-file-alt"></i>
+                    <span>Laporan Pendaftaran</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataMaster"
+                    aria-expanded="true" aria-controls="collapseDataMaster">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Data Master</span>
+                </a>
+                <div id="collapseDataMaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Sub-Menu:</h6>
+                        <a class="collapse-item" href="/user">Data User</a>
+                        <a class="collapse-item" href="/obat">Data Obat</a>
+                    </div>
+                </div>
+            </li>
             
-            <hr class="sidebar-divider">
+            <hr class="sidebar-divider d-none d-md-block">
             
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
@@ -82,7 +104,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">User</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                <img class="img-profile rounded-circle" src="https://ui-avatars.com/api/?name=User&background=random">
                             </a>
                             
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -102,7 +124,8 @@
                 <div class="container-fluid">
                     @yield('content')
                 </div>
-                </div>
+            </div>
+
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -110,8 +133,9 @@
                     </div>
                 </div>
             </footer>
-            </div>
         </div>
+    </div>
+
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -147,7 +171,6 @@
 
     <script src="{{ asset('template/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
     <script src="{{ asset('template/js/demo/datatables-demo.js') }}"></script>
