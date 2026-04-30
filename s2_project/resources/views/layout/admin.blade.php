@@ -51,6 +51,13 @@
                     <span>Dokter</span>
                 </a>
             </li>
+
+            <li class="nav-item {{ Request::is('poliklinik*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('poliklinik.index') }}">
+                    <i class="fas fa-fw fa-hospital"></i>
+                    <span>Poliklinik</span>
+                </a>
+            </li>
             
             <li class="nav-item">
                 <a class="nav-link" href="/pendaftaran">
@@ -77,6 +84,7 @@
                         <h6 class="collapse-header">Sub-Menu:</h6>
                         <a class="collapse-item" href="/user">Data User</a>
                         <a class="collapse-item" href="/obat">Data Obat</a>
+                        <a class="collapse-item" href="{{ route('dokter.index') }}">Data Dokter</a>
                     </div>
                 </div>
             </li>

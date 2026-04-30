@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PoliklinikController;
+use App\Http\Controllers\DokterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,12 @@ Route::get('/poliklinik', [PoliklinikController::class, 'index'])->name('polikli
 Route::get('/poliklinik/{id}/edit', [PoliklinikController::class, 'edit'])->name('poliklinik.edit');
 Route::put('/poliklinik/{id}', [PoliklinikController::class, 'update'])->name('poliklinik.update');
 Route::delete('/poliklinik/{id}', [PoliklinikController::class, 'destroy'])->name('poliklinik.destroy');
+
+//Dokter
+Route::get('/dokter', [DokterController::class, 'index'])->name('dokter.index');
+Route::get('/dokter/create', [DokterController::class, 'create'])->name('dokter.create');
+Route::post('/dokter/add', [DokterController::class, 'add'])->name('dokter.add');
+Route::delete('/dokter/{id}', [DokterController::class, 'destroy'])->name('dokter.destroy');
+Route::get('/dokter/edit/{id}', [DokterController::class, 'edit'])->name('dokter.edit');
+Route::put('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
+Route::get('/dokter/{id}', [DokterController::class, 'show'])->name('dokter.show');

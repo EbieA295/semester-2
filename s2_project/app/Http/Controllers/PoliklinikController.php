@@ -25,6 +25,7 @@ class PoliklinikController extends Controller
     {
         $validatedData = $request->validate([
             'nama_poliklinik' => 'required|max:255',
+            'total_pasien' => 'required|numeric', // Validasi untuk total_pasien
         ]);
 
         Poliklinik::create($validatedData);
@@ -43,6 +44,7 @@ class PoliklinikController extends Controller
     {
         $validatedData = $request->validate([
             'nama_poliklinik' => 'required|max:255',
+            'total_pasien' => 'required|numeric', // Validasi untuk total_pasien
         ]);
 
         $poliklinik = Poliklinik::findOrFail($id);

@@ -30,7 +30,9 @@
                             <form action="{{ route('poliklinik.destroy', $item->id) }}" method="POST" class="d-inline delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn btn-danger btn-sm btn-delete">Hapus</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                    <i class="fas fa-trash"></i> Hapus
+                                </button>
                             </form>
                         </td>
                     </tr>
