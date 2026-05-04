@@ -11,12 +11,13 @@ class AdminController extends Controller
 {
     public function index()
     {
+        // Mengambil semua unit agar admin bisa memantau status (Tersedia/Terisi/Dipesan)
         $units = \App\Models\Unit::all();
-    // Ambil 5 transaksi terbaru untuk ditampilkan di tabel
-    $bookings = \App\Models\Booking::latest()->take(5)->get(); 
 
-    return view('admin', compact('units', 'bookings'));
+        // Mengambil semua booking terbaru dari customer untuk dikonfirmasi
+        $bookings = \App\Models\Booking::latest()->get();
 
+        return view('admin', compact('units', 'bookings'));
     }
 
     public function store(Request $request)
@@ -99,5 +100,18 @@ class AdminController extends Controller
             DB::rollback(); // Batalkan jika ada salah satu yang gagal
             return response()->json(['success' => false, 'message' => 'Gagal: ' . $e->getMessage()], 500);
         }
+    }
+
+        public function konfirmasiBooking($id)
+    {
+        $booking = \App\Models\Booking::find($id);
+        if ($booking) {
+            $booking->update(['status' => 'Confirmed']);
+            
+            // Otomatis ubah status unit menjadi Terisi
+            \App\Models\Unit::where('id', $booking->unit_id)->update(['status' => 'Terisi']);
+        }
+    
+        return back()->with('success', 'Booking telah dikonfirmasi!');
     }
 }

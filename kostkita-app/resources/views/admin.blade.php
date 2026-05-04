@@ -23,13 +23,22 @@
 </head>
 <body>
 
+<!-- NAVBAR AREA -->
 <nav class="navbar navbar-expand-lg py-3">
     <div class="container-fluid px-4">
         <a class="logo" href="#">🏠 KostKita</a>
         <div class="ms-auto d-flex align-items-center">
+            <!-- Profil & Logout -->
             <div class="me-3 text-end d-none d-md-block">
-                <div class="fw-bold small">Halo, Ebie (Admin)</div>
-                <div class="text-muted" style="font-size: 10px;">KostKita - Brother (Tipe A, B, C)</div>
+                <div class="fw-bold small">Halo, {{ Auth::user()->name }} (Admin)</div>
+                <a href="#" class="text-danger fw-bold text-decoration-none" 
+                    style="font-size: 11px;"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
             <button class="btn btn-orange btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambah">+ Tambah Unit Baru</button>
         </div>
@@ -39,10 +48,9 @@
 <div class="container-fluid px-4 mt-4">
     <div class="row">
         <div class="col-lg-8">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="fw-extrabold mb-0">Panel Manajemen Kamar</h4>
-            </div>
+            <h4 class="fw-extrabold mb-4">Panel Manajemen Kamar</h4>
 
+            <!-- Filter Card -->
             <div class="card mb-4">
                 <div class="card-body p-4">
                     <div class="row g-3">
@@ -65,9 +73,11 @@
                 </div>
             </div>
 
+            <!-- Grid Unit -->
             <div id="unitGrid" class="row row-cols-1 row-cols-md-3 g-4 mb-5"></div>
         </div>
 
+        <!-- Sidebar Panel -->
         <div class="col-lg-4">
             <div class="card mb-4">
                 <div class="card-body">
@@ -113,6 +123,7 @@
     </div>
 </div>
 
+<!-- MODAL: Tambah Kamar -->
 <div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow">
@@ -132,6 +143,7 @@
     </div>
 </div>
 
+<!-- MODAL: Input Penyewa -->
 <div class="modal fade" id="modalInputPenyewa" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content border-0">

@@ -7,7 +7,8 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a href="{{ route('dokter.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Tambah</a>
+            <a href="{{ route('dokter.create') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Tambah</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -29,15 +30,21 @@
                             <td>{{ $item->nama_dokter }}</td>
                             <td>{{ $item->poliklinik->nama_poliklinik }}</td>
                             <td>
-                                <img src="{{ asset('storage/foto_dokter/' . $item->foto_dokter) }}" class="img-thumbnail rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" alt="Foto Dokter">
+                                <img src="{{ asset('storage/foto_dokter/' . $item->foto_dokter) }}
+                                " class="img-thumbnail rounded-circle" 
+                                style="width: 100px; height: 100px; object-fit: cover;" alt="Foto Dokter">
                             </td>
                             <td>
-                                <a href="{{ route('dokter.show', $item->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                                <a href="{{ route('dokter.edit', $item->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                <form action="{{ route('dokter.destroy', $item->id) }}" method="POST" class="d-inline delete-form">
+                                <a href="{{ route('dokter.show', $item->id) }}" 
+                                class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('dokter.edit', $item->id) }}" 
+                                class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                <form action="{{ route('dokter.destroy', $item->id) }}" 
+                                method="POST" class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                    <button type="submit" class="btn btn-danger btn-sm" 
+                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                         <i class="fas fa-trash"></i> Hapus
                                     </button>
                                 </form>

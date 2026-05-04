@@ -12,12 +12,14 @@
             @csrf
             <div class="form-group">
                 <label for="nama_poliklinik">Nama Poliklinik</label>
-                <input type="text" name="nama_poliklinik" id="nama_poliklinik" class="form-control" required>
+                <input type="text" name="nama_poliklinik" id="nama_poliklinik" 
+                class="form-control" required>
             </div>
             
             <div class="form-group">
                 <label for="total_pasien">Total Pasien</label>
-                <input type="number" name="total_pasien" id="total_pasien" class="form-control" value="0" required>
+                <input type="number" name="total_pasien" id="total_pasien" 
+                class="form-control" value="0" required>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Simpan</button>

@@ -7,7 +7,8 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <a href="{{ route('poliklinik.create') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Tambah</a>
+        <a href="{{ route('poliklinik.create') }}" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> Tambah</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -26,11 +27,14 @@
                         <td>{{ $no++ }}</td>
                         <td>{{ $item->nama_poliklinik }}</td>
                         <td>{{ $item->total_pasien ?? 0 }}</td> <td>
-                            <a href="{{ route('poliklinik.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('poliklinik.destroy', $item->id) }}" method="POST" class="d-inline delete-form">
+                            <a href="{{ route('poliklinik.edit', $item->id) }}" 
+                            class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('poliklinik.destroy', $item->id) }}
+                            "method="POST" class="d-inline delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                <button type="submit" class="btn btn-danger btn-sm" 
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                     <i class="fas fa-trash"></i> Hapus
                                 </button>
                             </form>
