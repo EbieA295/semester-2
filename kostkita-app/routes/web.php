@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PemilikController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Unit;
 
 // ==========================================
 // 1. OTENTIKASI (LOGIN SATU PINTU)
@@ -15,7 +16,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/', function () {
-    return view('welcome');
+    $semuaKamar = unit::all();
+    return view('welcome', compact('semuaKamar'));
 });
 
 // Tambahkan ini di bagian Otentikasi
