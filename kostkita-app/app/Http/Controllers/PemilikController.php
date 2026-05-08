@@ -10,17 +10,17 @@ class PemilikController extends Controller
 {
     public function index()
     {
-        // Mengambil data untuk statistik dashboard
-        $totalPendapatan = Booking::where('status', 'Confirmed')->sum('total_harga'); 
+        $totalPendapatan = Booking::where('status', 'Confirmed')->sum('total_harga');
         $unitTersedia = Unit::where('status', 'Tersedia')->count();
         $unitTerisi = Unit::where('status', 'Terisi')->count();
-        $bookingTerbaru = Booking::with('user', 'unit')->latest()->take(5)->get();
 
-        // Mengirimkan variabel ke view pemilik.blade.php
+        // Hapus 'user' dari with(), cukup 'unit' saja jika relasinya sudah ada
+        $bookingTerbaru = Booking::latest()->take(5)->get();
+
         return view('pemilik.dashboard', compact(
-            'totalPendapatan', 
-            'unitTersedia', 
-            'unitTerisi', 
+            'totalPendapatan',
+            'unitTersedia',
+            'unitTerisi',
             'bookingTerbaru'
         ));
     }

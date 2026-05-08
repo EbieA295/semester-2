@@ -38,7 +38,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $unit = Unit::findOrFail($id);
 
@@ -57,7 +57,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $unit = Unit::findOrFail($id);
         $unit->delete();
@@ -102,16 +102,38 @@ class AdminController extends Controller
         }
     }
 
-        public function konfirmasiBooking($id)
+        public function konfirmasiBooking(int $id)
     {
         $booking = \App\Models\Booking::find($id);
         if ($booking) {
             $booking->update(['status' => 'Confirmed']);
-            
+
             // Otomatis ubah status unit menjadi Terisi
             \App\Models\Unit::where('id', $booking->unit_id)->update(['status' => 'Terisi']);
         }
-    
+
         return back()->with('success', 'Booking telah dikonfirmasi!');
+    }
+
+    // Tambahkan di dalam class AdminController
+    public function konfirmasi(int $id)
+    {
+        $booking = \App\Models\Booking::findOrFail($id);
+
+        // Ambil data unit terkait untuk mendapatkan harganya
+        $unit = \App\Models\Unit::find($booking->unit_id);
+
+        // Update status booking dan isi total_harganya
+        $booking->update([
+            'status' => 'Confirmed',
+            'total_harga' => $unit->harga ?? 0 // Pastikan kolom harga ada di tabel units
+        ]);
+
+        // Update status unit menjadi 'Terisi'
+        if($unit) {
+            $unit->update(['status' => 'Terisi']);
+        }
+
+        return redirect()->back()->with('success', 'Booking berhasil dikonfirmasi!');
     }
 }

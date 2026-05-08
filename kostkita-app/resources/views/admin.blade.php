@@ -23,15 +23,13 @@
 </head>
 <body>
 
-<!-- NAVBAR AREA -->
 <nav class="navbar navbar-expand-lg py-3">
     <div class="container-fluid px-4">
         <a class="logo" href="#">🏠 KostKita</a>
         <div class="ms-auto d-flex align-items-center">
-            <!-- Profil & Logout -->
             <div class="me-3 text-end d-none d-md-block">
                 <div class="fw-bold small">Halo, {{ Auth::user()->name }} (Admin)</div>
-                <a href="#" class="text-danger fw-bold text-decoration-none" 
+                <a href="#" class="text-danger fw-bold text-decoration-none"
                     style="font-size: 11px;"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Logout
@@ -46,11 +44,16 @@
 </nav>
 
 <div class="container-fluid px-4 mt-4">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-lg-8">
             <h4 class="fw-extrabold mb-4">Panel Manajemen Kamar</h4>
-
-            <!-- Filter Card -->
             <div class="card mb-4">
                 <div class="card-body p-4">
                     <div class="row g-3">
@@ -73,11 +76,9 @@
                 </div>
             </div>
 
-            <!-- Grid Unit -->
             <div id="unitGrid" class="row row-cols-1 row-cols-md-3 g-4 mb-5"></div>
         </div>
 
-        <!-- Sidebar Panel -->
         <div class="col-lg-4">
             <div class="card mb-4">
                 <div class="card-body">
@@ -102,7 +103,7 @@
                                     <th class="ps-3">ID Transk.</th>
                                     <th>Penyewa</th>
                                     <th>Unit</th>
-                                </tr>
+                                    <th>Aksi</th> </tr>
                             </thead>
                             <tbody id="transactionTable">
                                 @isset($bookings)
@@ -111,6 +112,18 @@
                                         <td class="ps-3 fw-bold">#{{ $booking->created_at->format('Ymd') }}-{{ $booking->id }}</td>
                                         <td>{{ $booking->nama_penyewa }}</td>
                                         <td>{{ $booking->unit_id }}</td>
+                                        <td>
+                                            @if(strtolower($booking->status) == 'pending' || strtolower($booking->status) == 'panding')
+                                                <form action="{{ route('admin.konfirmasiBooking', $booking->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success py-0 px-2" style="font-size: 11px;">
+                                                        Konfirmasi
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <span class="badge bg-success" style="font-size: 10px;">Confirmed</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                     @endforeach
                                 @endisset
@@ -119,47 +132,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL: Tambah Kamar -->
-<div class="modal fade" id="modalTambah" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content border-0 shadow">
-            <div class="modal-header border-0"><h5>Tambah Kamar Baru</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <form id="formTambahUnit">
-                @csrf
-                <div class="modal-body">
-                    <input type="text" name="id" class="form-control mb-3" placeholder="ID Kamar (A101)" required>
-                    <input type="text" name="tipe" class="form-control mb-3" placeholder="Tipe (Reguler/VIP)" required>
-                    <input type="text" name="lokasi" class="form-control mb-3" placeholder="Lokasi (Lantai 1)" required>
-                    <input type="number" name="harga" class="form-control mb-3" placeholder="Harga per Bulan" required>
-                    <select name="status" class="form-select"><option value="Tersedia">Tersedia</option><option value="Terisi">Terisi</option></select>
-                </div>
-                <div class="modal-footer border-0"><button type="submit" class="btn btn-orange w-100">Simpan Unit</button></div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- MODAL: Input Penyewa -->
-<div class="modal fade" id="modalInputPenyewa" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content border-0">
-            <div class="modal-header"><h5>Input Data Penyewa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <form id="formInputPenyewa">
-                @csrf
-                <div class="modal-body">
-                    <input type="hidden" id="in_unit_id" name="unit_id">
-                    <div class="alert alert-info py-2">Mencatat Penyewa untuk Kamar: <b id="text_unit_id"></b></div>
-                    <input type="text" name="nama_penyewa" class="form-control mb-3" placeholder="Nama Lengkap Penyewa" required>
-                    <input type="text" name="no_hp" class="form-control mb-3" placeholder="Nomor WhatsApp" required>
-                    <label class="small fw-bold">Tanggal Masuk</label>
-                    <input type="date" name="tgl_masuk" class="form-control" required>
-                </div>
-                <div class="modal-footer border-0"><button type="submit" class="btn btn-success w-100">Simpan & Ubah Status Kamar</button></div>
-            </form>
         </div>
     </div>
 </div>
@@ -178,7 +150,7 @@
             const isAvailable = unit.status === 'Tersedia';
             const statusColor = isAvailable ? '#22C55E' : '#EF4444';
             const badgeClass = isAvailable ? 'bg-success' : 'bg-danger';
-            
+
             grid.innerHTML += `
                 <div class="col">
                     <div class="card h-100 position-relative overflow-hidden">
@@ -200,38 +172,11 @@
         });
     }
 
+    // Fungsi JS lainnya tetap sama
     function bukaModalPenyewa(id) {
         document.getElementById('in_unit_id').value = id;
         document.getElementById('text_unit_id').innerText = id;
         new bootstrap.Modal(document.getElementById('modalInputPenyewa')).show();
-    }
-
-    document.getElementById('formInputPenyewa').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(e.target));
-        const resp = await fetch('/admin/input-penyewa', {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if((await resp.json()).success) location.reload();
-    });
-
-    document.getElementById('formTambahUnit').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const data = Object.fromEntries(new FormData(e.target));
-        const resp = await fetch('/admin/store', {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if((await resp.json()).success) location.reload();
-    });
-
-    async function hapusUnit(id) {
-        if(!confirm('Hapus unit ini?')) return;
-        await fetch(`/admin/destroy/${id}`, { method: 'DELETE', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' } });
-        location.reload();
     }
 
     document.addEventListener('DOMContentLoaded', renderUnits);

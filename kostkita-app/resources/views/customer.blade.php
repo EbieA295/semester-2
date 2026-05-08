@@ -109,7 +109,7 @@
                             <p class="text-muted small mb-2">KostKita - {{ $unit->lokasi }} ({{ $unit->tipe }})</p>
                             <div class="mb-3 small">❄️ AC 📶 WiFi 🚿 K.Mandi</div>
                             <div class="text-orange fw-extrabold mb-3">Rp {{ number_format($unit->harga, 0, ',', '.') }} <span class="text-muted small">/bln</span></div>
-                            
+
                             @if($unit->status == 'Tersedia')
                                 <button onclick="bukaModalBooking('{{ $unit->id }}')" class="btn btn-outline-dark btn-sm w-100 rounded-pill">Cek Detail & Booking</button>
                             @else
@@ -205,6 +205,10 @@
                     <div class="form-group">
                         <label class="small fw-bold mb-2">Pilih Tanggal Masuk Kost</label>
                         <input type="date" name="tgl_masuk" class="form-control form-control-lg border-0 bg-light" required min="{{ date('Y-m-d') }}">
+                    </div>
+                    <div class="form-group">
+                        <label class="small fw-bold mb-2">Nomor WhatsApp (Aktif)</label>
+                        <input type="text" name="no_hp" class="form-control form-control-lg border-0 bg-light" placeholder="Contoh: 08123456789" required>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
