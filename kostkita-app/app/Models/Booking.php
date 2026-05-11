@@ -16,6 +16,8 @@ class Booking extends Model
         'tgl_masuk',
         'status',
         'total_harga',
+        'payment_proof',
+        'payment_status',
     ];
 
     /**

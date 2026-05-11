@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('css/premium.css') }}" rel="stylesheet">
     
     <style>
         :root {
@@ -104,51 +105,6 @@
             padding: 40px;
         }
 
-        /* Premium Cards */
-        .card-stats {
-            border: none;
-            border-radius: 24px;
-            padding: 25px;
-            background: white;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-            transition: transform 0.3s ease;
-        }
-        .card-stats:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-
-        .table-premium {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-        }
-        .table-premium th {
-            background: #F9FAFB;
-            padding: 18px 25px;
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-            color: #6B7280;
-            border: none;
-        }
-        .table-premium td {
-            padding: 18px 25px;
-            vertical-align: middle;
-            border-bottom: 1px solid #F3F4F6;
-        }
-
         @media (max-width: 992px) {
             #sidebar { margin-left: -280px; }
             #content { padding-left: 0; }
@@ -169,36 +125,39 @@
                 <a href="/admin" class="nav-link-sidebar {{ Request::is('admin*') ? 'active' : '' }}">
                     <i data-lucide="layout-dashboard"></i> Dashboard
                 </a>
-                <a href="#" class="nav-link-sidebar">
+                <a href="/admin" class="nav-link-sidebar">
                     <i data-lucide="home"></i> Kelola Kamar
                 </a>
-                <a href="#" class="nav-link-sidebar">
+                <a href="/admin" class="nav-link-sidebar">
                     <i data-lucide="users"></i> Data Penyewa
                 </a>
-                <a href="#" class="nav-link-sidebar">
+                <a href="/admin" class="nav-link-sidebar">
                     <i data-lucide="credit-card"></i> Transaksi
                 </a>
             @elseif(Auth::user()->role == 'owner')
                 <a href="/pemilik" class="nav-link-sidebar {{ Request::is('pemilik*') ? 'active' : '' }}">
                     <i data-lucide="layout-dashboard"></i> Dashboard
                 </a>
-                <a href="#" class="nav-link-sidebar">
+                <a href="/pemilik" class="nav-link-sidebar">
                     <i data-lucide="home"></i> Unit Kost Saya
                 </a>
-                <a href="#" class="nav-link-sidebar">
+                <a href="/pemilik" class="nav-link-sidebar">
                     <i data-lucide="trending-up"></i> Laporan Keuangan
                 </a>
             @else
-                <a href="#" class="nav-link-sidebar {{ Request::is('customer*') ? 'active' : '' }}">
+                <a href="/customer" class="nav-link-sidebar {{ Request::is('customer*') ? 'active' : '' }}">
+                    <i data-lucide="layout-dashboard"></i> Dashboard Saya
+                </a>
+                <a href="/" class="nav-link-sidebar">
                     <i data-lucide="search"></i> Cari Kost
                 </a>
                 <a href="#" class="nav-link-sidebar d-flex justify-content-between align-items-center">
                     <span class="d-flex align-items-center"><i data-lucide="heart"></i> Wishlist</span>
                     <span class="badge bg-soft-orange text-orange rounded-pill" style="font-size: 10px;">{{ Auth::user()->wishlists()->count() }}</span>
                 </a>
-                <a href="#" class="nav-link-sidebar d-flex justify-content-between align-items-center">
+                <a href="/customer" class="nav-link-sidebar d-flex justify-content-between align-items-center">
                     <span class="d-flex align-items-center"><i data-lucide="history"></i> Riwayat Booking</span>
-                    <span class="badge bg-light text-muted rounded-pill" style="font-size: 10px;">0</span>
+                    <span class="badge bg-light text-muted rounded-pill" style="font-size: 10px;">{{ App\Models\Booking::where('nama_penyewa', Auth::user()->name)->count() }}</span>
                 </a>
             @endif
             

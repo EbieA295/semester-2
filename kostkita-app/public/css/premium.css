@@ -1,0 +1,84 @@
+:root {
+    --primary-orange: #F47B20;
+    --secondary-orange: #FF9F1C;
+    --soft-orange: #FFF4F0;
+    --bg-gray: #F9FAFB;
+}
+
+.bg-orange {
+    background-color: var(--primary-orange) !important;
+}
+
+.text-orange {
+    color: var(--primary-orange) !important;
+}
+
+.btn-orange {
+    background-color: var(--primary-orange);
+    color: white;
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-orange:hover {
+    background-color: var(--secondary-orange);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(244, 123, 32, 0.3);
+}
+
+.btn-outline-orange {
+    border: 2px solid var(--primary-orange);
+    color: var(--primary-orange);
+    background: transparent;
+    transition: all 0.3s;
+}
+
+.btn-outline-orange:hover {
+    background-color: var(--primary-orange);
+    color: white;
+}
+
+.btn-white {
+    background-color: white;
+    color: var(--primary-orange);
+}
+
+.bg-soft-orange {
+    background-color: var(--soft-orange) !important;
+}
+
+.fw-800 { font-weight: 800; }
+.extra-small { font-size: 10px; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--primary-orange);
+    border-radius: 10px;
+}
+
+/* Card Animations */
+.card-premium {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 24px;
+}
+
+/* Form Styling */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 0.25rem rgba(244, 123, 32, 0.1);
+}

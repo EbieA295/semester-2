@@ -24,8 +24,7 @@ class CustomerController extends Controller
 
         $units = $query->get();
 
-        // 2. CEK LOGIN UNTUK MYBOOKINGS (Penting!)
-        // Jika tidak login, kita kasih array kosong agar view tidak error
+        // 2. CEK LOGIN UNTUK MYBOOKINGS
         $myBookings = collect();
         if (Auth::check()) {
             $myBookings = Booking::where('nama_penyewa', Auth::user()->name)->get();
@@ -36,32 +35,50 @@ class CustomerController extends Controller
 
     public function storeBooking(Request $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silahkan login terlebih dahulu');
-        }
-
         $request->validate([
-            'unit_id' => 'required',
-            'tgl_masuk' => 'required|date',
-            'no_hp' => 'required',
+            'unit_id' => 'required|exists:units,id',
+            'tgl_masuk' => 'required|date|after_or_equal:today',
         ]);
 
-        // 1. Ambil data unit untuk mendapatkan harganya
-        $unit = Unit::where('id', $request->unit_id)->first();
+        $unit = Unit::findOrFail($request->unit_id);
 
-        // 2. Simpan ke Database dengan total_harga
+        if ($unit->status !== 'Tersedia') {
+            return back()->with('error', 'Maaf, kamar ini sudah tidak tersedia.');
+        }
+
+        // Simpan ke Database
         Booking::create([
-            'unit_id' => $request->unit_id,
+            'unit_id' => $unit->id,
             'nama_penyewa' => Auth::user()->name,
-            'no_hp' => $request->no_hp,
+            'no_hp' => Auth::user()->no_hp,
             'tgl_masuk' => $request->tgl_masuk,
-            'total_harga' => $unit->harga, // AMBIL HARGA DARI TABEL UNIT
+            'total_harga' => $unit->harga,
             'status' => 'Pending'
         ]);
 
-        // 3. Update status unit
-        Unit::where('id', $request->unit_id)->update(['status' => 'Dipesan']);
+        // Update status unit
+        $unit->update(['status' => 'Dipesan']);
 
-        return back()->with('success', 'Booking berhasil! Tunggu konfirmasi Admin.');
+        return back()->with('success', 'Booking berhasil! Silakan cek dashboard Anda untuk detail pembayaran.');
+    }
+
+    public function uploadPayment(Request $request)
+    {
+        $request->validate([
+            'booking_id' => 'required|exists:bookings,id',
+            'payment_proof' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $booking = Booking::findOrFail($request->booking_id);
+
+        if ($request->hasFile('payment_proof')) {
+            $path = $request->file('payment_proof')->store('payments', 'public');
+            $booking->update([
+                'payment_proof' => $path,
+                'payment_status' => 'Pending Verification'
+            ]);
+        }
+
+        return back()->with('success', 'Bukti pembayaran berhasil diupload! Tunggu verifikasi admin.');
     }
 }

@@ -2,179 +2,136 @@
 
 @section('content')
 <!-- Hero Section -->
-<div class="container mt-5 pt-lg-5">
-    <div class="row align-items-center mb-5 pb-lg-5">
-        <div class="col-lg-6">
-            <span class="badge bg-soft-orange text-orange px-3 py-2 rounded-pill fw-bold mb-3">
-                ✨ SOLUSI KOST MAHASISWA NO. 1
-            </span>
-            <h1 class="display-3 fw-800 mb-4" style="line-height: 1.1; letter-spacing: -2px;">
-                Temukan Kost <span class="text-orange">Nyaman</span> <br>di Sekitar Kampus.
-            </h1>
-            <p class="lead text-muted mb-5 pe-lg-5">
-                Cari, cek fasilitas, dan booking kost impianmu dalam hitungan menit. Transparan, aman, dan tanpa biaya tambahan.
-            </p>
-            <div class="d-flex flex-wrap gap-3">
-                <a href="#daftar-kamar" class="btn btn-orange px-5 py-3">
-                    <i data-lucide="search" class="me-2" style="width: 20px;"></i> Cari Kamar Sekarang
-                </a>
-                <div class="d-flex align-items-center gap-3 ms-lg-3">
-                    <div class="avatar-group d-flex">
-                        <img src="https://i.pravatar.cc/150?u=1" class="rounded-circle border border-4 border-white shadow-sm" width="45">
-                        <img src="https://i.pravatar.cc/150?u=2" class="rounded-circle border border-4 border-white shadow-sm" width="45" style="margin-left: -15px;">
-                        <img src="https://i.pravatar.cc/150?u=3" class="rounded-circle border border-4 border-white shadow-sm" width="45" style="margin-left: -15px;">
-                    </div>
-                    <div>
-                        <div class="fw-bold small">500+ Mahasiswa</div>
-                        <div class="text-muted extra-small" style="font-size: 11px;">Sudah menemukan kost</div>
-                    </div>
+<div class="bg-soft-orange" style="padding: 100px 0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <span class="badge bg-white text-orange px-3 py-2 rounded-pill shadow-sm mb-3 fw-bold">#1 Kost App di Kampus</span>
+                <h1 class="display-3 fw-800 mb-4 text-dark">Cari Kost <span class="text-orange">Nyaman</span> Tanpa Ribet.</h1>
+                <p class="lead text-muted mb-5">Platform penyewaan kost modern dengan sistem booking instan dan pembayaran aman. Temukan kamar impianmu sekarang!</p>
+                <div class="d-flex gap-3">
+                    <a href="#daftar-kamar" class="btn btn-orange px-4 py-3">Cari Kamar</a>
+                    <a href="/register" class="btn btn-outline-orange px-4 py-3">Daftar Akun</a>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-6 mt-5 mt-lg-0">
-            <div class="position-relative p-4">
-                <div class="position-absolute top-50 start-50 translate-middle w-100 h-100 bg-soft-orange rounded-circle opacity-50" style="filter: blur(80px); z-index: -1;"></div>
-                <img src="https://illustrations.popsy.co/amber/working-from-home.svg" class="img-fluid floating-animation" alt="Hero Illustration">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000" class="img-fluid rounded-5 shadow-lg" alt="Hero Image">
             </div>
-        </div>
-    </div>
-
-    <!-- Features Section -->
-    <div class="row g-4 mb-5 pb-5 mt-lg-5">
-        <div class="col-md-4">
-            <div class="p-4 rounded-4 bg-white shadow-sm border-0 h-100 feature-card">
-                <div class="icon-box bg-soft-orange text-orange mb-3">
-                    <i data-lucide="shield-check" size="28"></i>
-                </div>
-                <h5 class="fw-bold mb-2">Terverifikasi 100%</h5>
-                <p class="text-muted small mb-0">Setiap unit kost telah melalui proses verifikasi lapangan oleh tim kami untuk menjamin keaslian data.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-4 rounded-4 bg-white shadow-sm border-0 h-100 feature-card">
-                <div class="icon-box bg-soft-orange text-orange mb-3">
-                    <i data-lucide="credit-card" size="28"></i>
-                </div>
-                <h5 class="fw-bold mb-2">Pembayaran Aman</h5>
-                <p class="text-muted small mb-0">Sistem pembayaran yang aman dan transparan langsung ke pengelola kost melalui platform kami.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="p-4 rounded-4 bg-white shadow-sm border-0 h-100 feature-card">
-                <div class="icon-box bg-soft-orange text-orange mb-3">
-                    <i data-lucide="zap" size="28"></i>
-                </div>
-                <h5 class="fw-bold mb-2">Booking Instan</h5>
-                <p class="text-muted small mb-0">Lupakan ribetnya survey lokasi. Cek detail foto 360°, pilih kamar, dan booking langsung hari ini.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Kost Grid Section -->
-    <div id="daftar-kamar" class="pt-5 pb-5">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-end mb-5">
-            <div>
-                <h2 class="fw-800 mb-2">Rekomendasi Kamar Terpopuler</h2>
-                <p class="text-muted mb-0">Pilihan kost terbaik berdasarkan rating dan fasilitas mahasiswa.</p>
-            </div>
-            <a href="#" class="text-orange fw-bold text-decoration-none mt-3 mt-md-0">Lihat Semua <i data-lucide="arrow-right" class="ms-1" style="width: 18px;"></i></a>
-        </div>
-
-        <div class="row g-4">
-            @forelse($semuaKamar ?? [] as $kamar)
-            <div class="col-lg-4 col-md-6">
-                <div class="card card-premium h-100 border-0 shadow-sm overflow-hidden bg-white">
-                    <div class="position-relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000" class="card-img-top" style="height: 260px; object-fit: cover;">
-                        <div class="card-img-overlay p-3">
-                            <span class="badge {{ $kamar->stok_kamar > 0 ? 'bg-success' : 'bg-danger' }} px-3 py-2 rounded-pill shadow-sm">
-                                {{ $kamar->stok_kamar > 0 ? 'Tersedia' : 'Penuh' }}
-                            </span>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <h5 class="fw-bold mb-1 text-truncate" style="max-width: 200px;">{{ $kamar->nama_kamar }}</h5>
-                                <p class="text-muted small mb-0 d-flex align-items-center">
-                                    <i data-lucide="map-pin" size="14" class="me-1 text-orange"></i> 5 Menit ke Kampus
-                                </p>
-                            </div>
-                            <div class="text-warning small fw-bold d-flex align-items-center">
-                                <i data-lucide="star" fill="currentColor" size="16" class="me-1"></i> 4.9
-                            </div>
-                        </div>
-
-                        <div class="d-flex gap-3 mb-4">
-                            <div class="badge bg-light text-dark fw-medium rounded-pill px-3 py-2 d-flex align-items-center gap-1">
-                                <i data-lucide="wind" size="14"></i> AC
-                            </div>
-                            <div class="badge bg-light text-dark fw-medium rounded-pill px-3 py-2 d-flex align-items-center gap-1">
-                                <i data-lucide="wifi" size="14"></i> WiFi
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
-                            <div>
-                                <span class="fw-800 text-orange h4 mb-0">Rp {{ number_format($kamar->harga_per_bulan / 1000, 0) }}k</span>
-                                <span class="text-muted small">/bln</span>
-                            </div>
-                            <a href="/login" class="btn btn-outline-orange btn-sm rounded-pill px-4">Detail</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @empty
-            <div class="col-12 text-center py-5">
-                <div class="p-5 bg-white rounded-5 shadow-sm d-inline-block">
-                    <i data-lucide="search-x" size="48" class="text-muted mb-3 opacity-25"></i>
-                    <p class="text-muted fs-5 mb-0">Belum ada kamar yang terdaftar saat ini.</p>
-                </div>
-            </div>
-            @endforelse
         </div>
     </div>
 </div>
 
-<style>
-    .floating-animation {
-        animation: float 4s ease-in-out infinite;
-    }
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-    }
+<!-- Search Filter Section -->
+<div class="container" style="margin-top: -50px;">
+    <div class="bg-white rounded-4 shadow-lg p-4">
+        <form action="/" method="GET" class="row g-3">
+            <div class="col-md-4">
+                <label class="small fw-bold text-muted mb-2 text-uppercase">Cari Lokasi</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-0"><i data-lucide="map-pin" size="18" class="text-orange"></i></span>
+                    <input type="text" name="lokasi" class="form-control bg-light border-0 py-3" placeholder="Contoh: Dekat UNILA" value="{{ request('lokasi') }}">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="small fw-bold text-muted mb-2 text-uppercase">Tipe Kamar</label>
+                <select name="tipe" class="form-select bg-light border-0 py-3">
+                    <option value="Semua Tipe">Semua Tipe</option>
+                    <option value="Reguler" {{ request('tipe') == 'Reguler' ? 'selected' : '' }}>Reguler</option>
+                    <option value="Premium" {{ request('tipe') == 'Premium' ? 'selected' : '' }}>Premium</option>
+                    <option value="Eksklusif" {{ request('tipe') == 'Eksklusif' ? 'selected' : '' }}>Eksklusif</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="small fw-bold text-muted mb-2 text-uppercase">Harga Maks</label>
+                <input type="number" name="harga_max" class="form-control bg-light border-0 py-3" placeholder="Rp 2.000.000" value="{{ request('harga_max') }}">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-orange w-100 py-3 rounded-4 fw-bold">CARI</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-    .icon-box {
-        width: 56px;
-        height: 56px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 16px;
-    }
+<!-- Room List Section -->
+<div id="daftar-kamar" class="py-5 container">
+    <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+            <h6 class="text-orange fw-bold text-uppercase mb-2">Pilihan Terbaik</h6>
+            <h2 class="fw-800">Rekomendasi Kost Untukmu</h2>
+        </div>
+        <div>
+            <span class="text-muted">{{ count($semuaKamar) }} Kamar ditemukan</span>
+        </div>
+    </div>
 
-    .feature-card {
-        transition: all 0.3s ease;
-    }
-    .feature-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.05) !important;
-    }
+    <div class="row g-4">
+        @forelse($semuaKamar ?? [] as $kamar)
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 rounded-4 shadow-sm h-100 card-premium">
+                <div class="position-relative">
+                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000' }}" class="card-img-top rounded-top-4" style="height: 200px; object-fit: cover;">
+                    @auth
+                    <form action="{{ route('customer.wishlist.toggle', $kamar->id) }}" method="POST" class="position-absolute top-0 end-0 m-3">
+                        @csrf
+                        @php $isWishlisted = Auth::user()->wishlists()->where('unit_id', $kamar->id)->exists(); @endphp
+                        <button type="submit" class="btn {{ $isWishlisted ? 'btn-orange' : 'btn-white bg-white text-orange' }} rounded-circle p-2 shadow-sm border-0" style="width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;">
+                            <i data-lucide="heart" size="16" style="{{ $isWishlisted ? 'fill: white' : '' }}"></i>
+                        </button>
+                    </form>
+                    @endauth
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-1">{{ $kamar->id }} - {{ $kamar->tipe }}</h5>
+                    <p class="text-muted small mb-3"><i data-lucide="map-pin" size="14" class="me-1 text-orange"></i> {{ $kamar->lokasi }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                        <span class="fw-bold text-orange h5 mb-0">Rp {{ number_format($kamar->harga, 0, ',', '.') }}</span>
+                        <button type="button" class="btn btn-outline-orange btn-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $kamar->id }}">Detail</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">Kamar tidak ditemukan.</p>
+        </div>
+        @endforelse
+    </div>
+</div>
 
-    .card-premium {
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        border-radius: 28px;
-    }
-    .card-premium:hover {
-        transform: scale(1.02);
-        box-shadow: 0 25px 50px rgba(0,0,0,0.08) !important;
-    }
-    .card-premium .card-img-top {
-        transition: transform 0.6s ease;
-    }
-    .card-premium:hover .card-img-top {
-        transform: scale(1.1);
-    }
-</style>
+<!-- Modals Detail -->
+@foreach($semuaKamar ?? [] as $kamar)
+<div class="modal fade" id="modalDetail{{ $kamar->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg">
+            <div class="modal-header border-0 p-4 pb-0">
+                <h5 class="fw-bold">{{ $kamar->id }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000' }}" class="img-fluid rounded-4 mb-3">
+                <p><strong>Tipe:</strong> {{ $kamar->tipe }}</p>
+                <p><strong>Lokasi:</strong> {{ $kamar->lokasi }}</p>
+                <p><strong>Harga:</strong> Rp {{ number_format($kamar->harga, 0, ',', '.') }}</p>
+                
+                @auth
+                    @if(Auth::user()->role == 'customer')
+                        <form action="{{ route('customer.booking') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="unit_id" value="{{ $kamar->id }}">
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">TANGGAL MASUK</label>
+                                <input type="date" name="tgl_masuk" class="form-control" required min="{{ date('Y-m-d') }}">
+                            </div>
+                            <button type="submit" class="btn btn-orange w-100 py-3 rounded-4 fw-bold">BOOKING SEKARANG</button>
+                        </form>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-orange w-100 py-3 rounded-4 fw-bold">LOGIN UNTUK BOOKING</a>
+                @endauth
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 @endsection

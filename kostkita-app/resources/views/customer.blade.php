@@ -111,11 +111,20 @@
                         <div class="d-flex gap-2 align-items-center">
                             @if($b->status == 'Confirmed')
                                 <button onclick="bukaModalReview('{{ $b->unit_id }}')" class="btn btn-soft-orange p-0 border-0" style="font-size: 10px;"><i data-lucide="message-square" size="14"></i> Review</button>
+                                <span class="badge bg-success rounded-pill" style="font-size: 10px;">Aktif</span>
+                            @elseif($b->status == 'Pending')
+                                <span class="badge bg-warning rounded-pill" style="font-size: 10px;">Menunggu Konfirmasi</span>
+                            @elseif($b->status == 'Waiting for Payment')
+                                <button onclick="bukaModalBayar('{{ $b->id }}', '{{ $b->total_harga }}')" class="btn btn-orange btn-sm py-0 px-2 rounded-pill" style="font-size: 10px;">Bayar</button>
                             @endif
-                            <span class="badge {{ $b->status == 'Confirmed' ? 'bg-success' : 'bg-warning' }} rounded-pill" style="font-size: 10px;">{{ $b->status }}</span>
                         </div>
                     </div>
-                    <div class="text-muted extra-small">{{ \Carbon\Carbon::parse($b->tgl_masuk)->format('d M Y') }}</div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="text-muted extra-small">{{ \Carbon\Carbon::parse($b->tgl_masuk)->format('d M Y') }}</div>
+                        <div class="extra-small fw-bold {{ $b->payment_status == 'Paid' ? 'text-success' : 'text-danger' }}">
+                            {{ $b->payment_status ?? 'Unpaid' }}
+                        </div>
+                    </div>
                 </div>
                 @empty
                 <div class="text-center py-4">
@@ -171,6 +180,39 @@
     </div>
 </div>
 
+<!-- Modal Bayar -->
+<div class="modal fade" id="modalBayar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-5 overflow-hidden">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <h5 class="fw-bold">Upload Bukti Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{{ route('customer.uploadPayment') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body p-4">
+                    <input type="hidden" id="pay_booking_id" name="booking_id">
+                    <div class="bg-soft-orange p-3 rounded-4 mb-4 text-center">
+                        <p class="small text-muted mb-1 text-uppercase fw-bold">Total yang harus dibayar</p>
+                        <h3 class="fw-800 text-orange mb-0" id="display_total_harga">Rp 0</h3>
+                    </div>
+                    <div class="mb-4">
+                        <label class="small fw-bold text-muted text-uppercase mb-2">Pilih File Bukti Transfer</label>
+                        <input type="file" name="payment_proof" class="form-control form-control-lg border-0 bg-light rounded-4" required accept="image/*">
+                    </div>
+                    <div class="alert alert-info rounded-4 small mb-0">
+                        <i data-lucide="info" size="14" class="me-1"></i> Transfer ke Rekening <b>KostKita</b>: <br>
+                        <strong>Bank BCA: 1234567890</strong> a.n. KostKita App
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="submit" class="btn btn-orange w-100 py-3 rounded-4 fw-bold shadow-sm">UPLOAD SEKARANG</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Review -->
 <div class="modal fade" id="modalReview" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -215,6 +257,12 @@
     function bukaModalReview(id) {
         document.getElementById('rev_unit_id').value = id;
         new bootstrap.Modal(document.getElementById('modalReview')).show();
+    }
+
+    function bukaModalBayar(id, harga) {
+        document.getElementById('pay_booking_id').value = id;
+        document.getElementById('display_total_harga').innerText = 'Rp ' + parseInt(harga).toLocaleString('id-ID');
+        new bootstrap.Modal(document.getElementById('modalBayar')).show();
     }
 </script>
 

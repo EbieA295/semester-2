@@ -58,11 +58,6 @@ class LoginController extends Controller
     public function register(Request $request)
     {
         // 1. Validasi Input
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
 
         // 2. Simpan ke Database
         \App\Models\User::create([
