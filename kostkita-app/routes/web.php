@@ -29,18 +29,23 @@ Route::post('/register', [LoginController::class, 'register']);
 
 Route::middleware(['auth'])->group(function () {
 
-    //CUST
-    Route::post('/customer/booking', [CustomerController::class, 'storeBooking'])->name('customer.booking');
-    Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
+    // Customer routes
+    Route::prefix('customer')->middleware(['role:customer'])->group(function () {
+        Route::post('/booking', [CustomerController::class, 'storeBooking'])->name('customer.booking');
+        Route::get('/', [CustomerController::class, 'index'])->name('customer.dashboard');
+    });
 
-    //PEMILIK
-    Route::get('/pemilik', [PemilikController::class, 'index'])->name('pemilik.dashboard');
+    // Owner (Pemilik) routes
+    Route::prefix('pemilik')->middleware(['role:owner'])->group(function () {
+        Route::get('/', [PemilikController::class, 'index'])->name('pemilik.dashboard');
+    });
 
-    // MANAJEMEN ADMIN
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::post('/admin/store', [AdminController::class, 'store']);
-    Route::delete('/admin/destroy/{id}', [AdminController::class, 'destroy']);
-    Route::post('/admin/input-penyewa', [AdminController::class, 'checkIn']);
-    Route::post('/admin/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasi');
-    Route::post('/admin/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasiBooking');
+    // Admin routes
+    Route::prefix('admin')->middleware(['role:admin'])->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::post('/store', [AdminController::class, 'store']);
+        Route::delete('/destroy/{id}', [AdminController::class, 'destroy']);
+        Route::post('/input-penyewa', [AdminController::class, 'checkIn']);
+        Route::post('/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasi');
+    });
 });
