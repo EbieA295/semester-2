@@ -14,10 +14,10 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <link href="{{ asset('template/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    
+
     <link href="{{ asset('template/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    
+
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -28,7 +28,7 @@
     <div id="wrapper">
 
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-            
+
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
@@ -44,7 +44,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="/dokter">
                     <i class="fas fa-fw fa-user-md"></i>
@@ -58,7 +58,14 @@
                     <span>Poliklinik</span>
                 </a>
             </li>
-            
+
+            <li class="nav-item {{ Request::is('jadwalpoliklinik*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('jadwalpoliklinik.index') }}">
+                    <i class="fas fa-fw fa-calendar-alt"></i>
+                    <span>Jadwal Poliklinik</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="/pendaftaran">
                     <i class="fas fa-fw fa-notes-medical"></i>
@@ -88,9 +95,9 @@
                     </div>
                 </div>
             </li>
-            
+
             <hr class="sidebar-divider d-none d-md-block">
-            
+
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
@@ -101,7 +108,7 @@
             <div id="content">
 
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    
+
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
@@ -114,7 +121,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">User</span>
                                 <img class="img-profile rounded-circle" src="https://ui-avatars.com/api/?name=User&background=random">
                             </a>
-                            
+
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -161,7 +168,7 @@
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
                     <a class="btn btn-primary" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                    
+
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>

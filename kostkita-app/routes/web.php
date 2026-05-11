@@ -20,7 +20,6 @@ Route::get('/', function () {
     return view('welcome', compact('semuaKamar'));
 });
 
-// Tambahkan ini di bagian Otentikasi
 Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register']);
 
@@ -30,13 +29,11 @@ Route::post('/register', [LoginController::class, 'register']);
 
 Route::middleware(['auth'])->group(function () {
 
-    // BOOKING CUSTOMER (ALA AGODA)
+    //CUST
     Route::post('/customer/booking', [CustomerController::class, 'storeBooking'])->name('customer.booking');
-
-    // DASHBOARD CUSTOMER (ALA AGODA)
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer.dashboard');
 
-    // DASHBOARD PEMILIK (Sekarang diarahkan ke Controller agar datanya muncul)
+    //PEMILIK
     Route::get('/pemilik', [PemilikController::class, 'index'])->name('pemilik.dashboard');
 
     // MANAJEMEN ADMIN
@@ -44,8 +41,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/store', [AdminController::class, 'store']);
     Route::delete('/admin/destroy/{id}', [AdminController::class, 'destroy']);
     Route::post('/admin/input-penyewa', [AdminController::class, 'checkIn']);
-
     Route::post('/admin/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasi');
-
     Route::post('/admin/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasiBooking');
 });

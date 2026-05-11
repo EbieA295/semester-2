@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\JadwalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,11 @@ Route::delete('/dokter/{id}', [DokterController::class, 'destroy'])->name('dokte
 Route::get('/dokter/edit/{id}', [DokterController::class, 'edit'])->name('dokter.edit');
 Route::put('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
 Route::get('/dokter/{id}', [DokterController::class, 'show'])->name('dokter.show');
+
+//Jadwal Poliklinik
+Route::get('/jadwalpoliklinik', [JadwalController::class, 'index'])->name('jadwalpoliklinik.index');
+Route::get('/jadwalpoliklinik/create', [JadwalController::class, 'create'])->name('jadwalpoliklinik.create');
+Route::post('/jadwalpoliklinik/add', [JadwalController::class, 'add'])->name('jadwalpoliklinik.add');
+Route::get('/jadwalpoliklinik/{id}/edit', [JadwalController::class, 'edit'])->name('jadwalpoliklinik.edit');
+Route::put('/jadwalpoliklinik/update/{id}', [JadwalController::class, 'update'])->name('jadwalpoliklinik.update');
+Route::delete('/jadwalpoliklinik/{id}', [JadwalController::class, 'destroy'])->name('jadwalpoliklinik.destroy');
