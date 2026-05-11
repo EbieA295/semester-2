@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('customer');
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->string('payment_proof')->nullable()->after('total_harga');
+            $table->string('payment_status')->default('Unpaid')->after('payment_proof');
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('bookings', function (Blueprint $table) {
             //
         });
     }

@@ -29,7 +29,7 @@ class LoginController extends Controller
             // LOGIKA PENGALIHAN BERDASARKAN ROLE
             if ($user->role == 'admin') {
                 return redirect()->intended('/admin');
-            } elseif ($user->role == 'pemilik') {
+            } elseif ($user->role == 'owner') {
                 return redirect()->intended('/pemilik');
             } else {
                 return redirect()->intended('/customer');

@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PemilikController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Unit;
 
@@ -33,6 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('customer')->middleware(['role:customer'])->group(function () {
         Route::post('/booking', [CustomerController::class, 'storeBooking'])->name('customer.booking');
         Route::get('/', [CustomerController::class, 'index'])->name('customer.dashboard');
+        
+        // Wishlist & Review
+        Route::post('/wishlist/{unit_id}', [WishlistController::class, 'toggle'])->name('customer.wishlist.toggle');
+        Route::post('/review', [ReviewController::class, 'store'])->name('customer.review.store');
     });
 
     // Owner (Pemilik) routes
@@ -46,6 +52,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [AdminController::class, 'store']);
         Route::delete('/destroy/{id}', [AdminController::class, 'destroy']);
         Route::post('/input-penyewa', [AdminController::class, 'checkIn']);
-        Route::post('/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasi');
+        Route::post('/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasiBooking');
     });
 });

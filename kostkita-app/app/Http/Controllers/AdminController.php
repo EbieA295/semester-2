@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Unit;
 use App\Models\Booking;
-use Illuminate\Support\Facades\DB; // Tambahkan ini untuk Transaction
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreUnitRequest;
+use App\Http\Requests\UpdateUnitRequest;
+use App\Http\Requests\CheckInRequest;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -20,15 +24,13 @@ class AdminController extends Controller
         return view('admin', compact('units', 'bookings'));
     }
 
-    public function store(Request $request)
+    public function store(StoreUnitRequest $request)
     {
-        $validated = $request->validate([
-            'id' => 'required|unique:units,id',
-            'tipe' => 'required',
-            'lokasi' => 'required',
-            'harga' => 'required|numeric',
-            'status' => 'required'
-        ]);
+        $validated = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('units', 'public');
+        }
 
         Unit::create($validated);
 
@@ -38,16 +40,18 @@ class AdminController extends Controller
         ]);
     }
 
-    public function update(Request $request, int $id)
+    public function update(UpdateUnitRequest $request, int $id)
     {
         $unit = Unit::findOrFail($id);
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'tipe' => 'required',
-            'lokasi' => 'required',
-            'harga' => 'required|numeric',
-            'status' => 'required'
-        ]);
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($unit->image) {
+                Storage::disk('public')->delete($unit->image);
+            }
+            $validated['image'] = $request->file('image')->store('units', 'public');
+        }
 
         $unit->update($validated);
 
@@ -68,14 +72,9 @@ class AdminController extends Controller
         ]);
     }
 
-    public function checkIn(Request $request)
+    public function checkIn(CheckInRequest $request)
     {
-        $request->validate([
-            'unit_id' => 'required|exists:units,id',
-            'nama_penyewa' => 'required',
-            'no_hp' => 'required',
-            'tgl_masuk' => 'required|date',
-        ]);
+        $validated = $request->validated();
 
         // Menggunakan Transaction agar data konsisten
         DB::beginTransaction();
@@ -104,33 +103,17 @@ class AdminController extends Controller
 
         public function konfirmasiBooking(int $id)
     {
-        $booking = \App\Models\Booking::find($id);
-        if ($booking) {
-            $booking->update(['status' => 'Confirmed']);
-
-            // Otomatis ubah status unit menjadi Terisi
-            \App\Models\Unit::where('id', $booking->unit_id)->update(['status' => 'Terisi']);
-        }
-
-        return back()->with('success', 'Booking telah dikonfirmasi!');
-    }
-
-    // Tambahkan di dalam class AdminController
-    public function konfirmasi(int $id)
-    {
-        $booking = \App\Models\Booking::findOrFail($id);
-
-        // Ambil data unit terkait untuk mendapatkan harganya
-        $unit = \App\Models\Unit::find($booking->unit_id);
+        $booking = Booking::findOrFail($id);
+        $unit = Unit::find($booking->unit_id);
 
         // Update status booking dan isi total_harganya
         $booking->update([
             'status' => 'Confirmed',
-            'total_harga' => $unit->harga ?? 0 // Pastikan kolom harga ada di tabel units
+            'total_harga' => $unit->harga ?? 0
         ]);
 
         // Update status unit menjadi 'Terisi'
-        if($unit) {
+        if ($unit) {
             $unit->update(['status' => 'Terisi']);
         }
 

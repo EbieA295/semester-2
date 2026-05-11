@@ -1,68 +1,87 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun - KostKita</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #F8F9FA; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .card-register { border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .btn-orange { background: #F47B20; color: white; font-weight: 600; border-radius: 10px; }
-        .btn-orange:hover { background: #d66a1a; color: white; }
-    </style>
-</head>
-<body class="d-flex align-items-center vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card card-register p-4">
-                    <div class="text-center mb-4">
-                        <h2 class="fw-bold text-orange" style="color: #F47B20;">🏠 KostKita</h2>
-                        <p class="text-muted small">Daftar sekarang untuk mulai mencari kost</p>
+@extends('layouts.app')
+
+@section('content')
+<div class="container py-5 mt-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-lg p-4 p-md-5 rounded-5 bg-white overflow-hidden position-relative">
+                <div class="position-absolute top-0 start-0 w-100 h-2 bg-orange" style="height: 6px; background: var(--primary-orange);"></div>
+                
+                <div class="text-center mb-5">
+                    <div class="bg-soft-orange text-orange d-inline-flex p-3 rounded-4 mb-4">
+                        <i data-lucide="user-plus" size="32"></i>
                     </div>
-                    
-                    @if ($errors->any())
-                    <div class="alert alert-danger shadow-sm border-0" style="border-radius: 10px;">
-                        <ul class="mb-0 small fw-bold">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <h2 class="fw-800 mb-2">Buat Akun Baru</h2>
+                    <p class="text-muted">Bergabunglah dengan ribuan mahasiswa lainnya dalam mencari kost terbaik.</p>
+                </div>
+
+                @if ($errors->any())
+                <div class="alert alert-danger border-0 rounded-4 small mb-4">
+                    <ul class="mb-0 fw-bold">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <form action="{{ route('register') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label class="form-label small fw-bold text-muted">NAMA LENGKAP</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 rounded-start-4 px-3"><i data-lucide="user" size="18" class="text-muted"></i></span>
+                                <input type="text" name="name" class="form-control bg-light border-0 py-3 rounded-end-4" placeholder="Contoh: Ebie Aryansya" required value="{{ old('name') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label small fw-bold text-muted">EMAIL</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 rounded-start-4 px-3"><i data-lucide="mail" size="18" class="text-muted"></i></span>
+                                <input type="email" name="email" class="form-control bg-light border-0 py-3 rounded-end-4" placeholder="nama@email.com" required value="{{ old('email') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label small fw-bold text-muted">NOMOR HP (WA)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 rounded-start-4 px-3"><i data-lucide="phone" size="18" class="text-muted"></i></span>
+                                <input type="text" name="no_hp" class="form-control bg-light border-0 py-3 rounded-end-4" placeholder="0812..." required value="{{ old('no_hp') }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label small fw-bold text-muted">KATA SANDI</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 rounded-start-4 px-3"><i data-lucide="lock" size="18" class="text-muted"></i></span>
+                                <input type="password" name="password" class="form-control bg-light border-0 py-3 rounded-end-4" placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label small fw-bold text-muted">KONFIRMASI SANDI</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0 rounded-start-4 px-3"><i data-lucide="check-circle" size="18" class="text-muted"></i></span>
+                                <input type="password" name="password_confirmation" class="form-control bg-light border-0 py-3 rounded-end-4" placeholder="••••••••" required>
+                            </div>
+                        </div>
                     </div>
-                    @endif
-                    
-                    <form action="{{ route('register') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="small fw-bold">Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control bg-light border-0" placeholder="Ebie Aryansya" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="small fw-bold">Email</label>
-                            <input type="email" name="email" class="form-control bg-light border-0" placeholder="name@example.com" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="small fw-bold mb-1">Nomor HP</label>
-                            <input type="text" name="no_hp" class="form-control bg-light border-0 py-2" placeholder="0812xxxxxxxx" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="small fw-bold">Password</label>
-                            <input type="password" name="password" class="form-control bg-light border-0" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="small fw-bold">Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" class="form-control bg-light border-0" required>
-                        </div>
-                        <button type="submit" class="btn btn-orange w-100 py-2">Daftar Akun</button>
-                    </form>
-                    
-                    <div class="text-center mt-4">
-                        <p class="small text-muted">Sudah punya akun? <a href="{{ route('login') }}" class="text-decoration-none text-orange" style="color: #F47B20;">Login di sini</a></p>
+
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label small text-muted" for="terms">Saya menyetujui <a href="#" class="text-orange text-decoration-none fw-bold">Syarat & Ketentuan</a> yang berlaku.</label>
                     </div>
+
+                    <button type="submit" class="btn btn-orange w-100 py-3 rounded-4 fw-bold">DAFTAR SEKARANG</button>
+                </form>
+
+                <div class="mt-5 text-center">
+                    <p class="text-muted small mb-0">Sudah memiliki akun? <a href="{{ route('login') }}" class="text-orange fw-bold text-decoration-none">Masuk di sini</a></p>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

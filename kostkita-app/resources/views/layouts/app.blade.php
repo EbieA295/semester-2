@@ -15,53 +15,87 @@
 
     <style>
         :root {
-            --primary-orange: #FF6B35;
+            --primary-orange: #F47B20;
             --secondary-orange: #FF9F1C;
             --soft-orange: #FFF4F0;
+            --dark-gray: #111827;
+            --medium-gray: #4B5563;
+            --light-gray: #F3F4F6;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(244, 123, 32, 0.1);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #FDFDFD;
+            background-color: #FAFAFA;
+            color: var(--dark-gray);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        /* Navbar Glassmorphism */
+        /* Navbar Modern */
         .navbar {
-            background: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            padding: 15px 0;
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem 0;
+            transition: all 0.3s ease;
         }
 
         .navbar-brand {
             font-weight: 800;
             color: var(--primary-orange) !important;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
         }
 
+        .nav-link {
+            font-weight: 600;
+            color: var(--medium-gray) !important;
+            padding: 0.5rem 1.2rem !important;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-orange) !important;
+        }
+
+        /* Premium Buttons */
         .btn-orange {
             background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
-            color: white;
+            color: white !important;
             border: none;
             font-weight: 700;
-            border-radius: 12px;
-            padding: 10px 24px;
-            transition: all 0.3s ease;
+            border-radius: 14px;
+            padding: 12px 28px;
+            box-shadow: 0 4px 15px rgba(244, 123, 32, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .btn-orange:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(244, 123, 32, 0.35);
+        }
+
+        .btn-outline-orange {
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+            font-weight: 700;
+            border-radius: 14px;
+            padding: 10px 24px;
+            transition: 0.3s;
+        }
+
+        .btn-outline-orange:hover {
+            background: var(--primary-orange);
             color: white;
         }
 
-        .navbar {
-            background: rgba(255, 255, 255, 0.7) !important;
-            backdrop-filter: blur(15px); /* Efek kaca buram */
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
-        }
+        /* Utility Classes */
+        .fw-800 { font-weight: 800; }
+        .text-orange { color: var(--primary-orange); }
+        .bg-soft-orange { background-color: var(--soft-orange); }
     </style>
 </head>
 <body>
@@ -72,12 +106,41 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link px-3" href="/">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#daftar-kamar">Cari Kost</a></li>
-                    <li class="nav-item ms-lg-3">
-                        <a href="/login" class="btn btn-orange">Masuk</a>
-                    </li>
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link" href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#daftar-kamar">Cari Kost</a></li>
+                    @guest
+                        <li class="nav-item ms-lg-3">
+                            <a href="/login" class="nav-link fw-bold text-dark">Masuk</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/register" class="btn btn-orange">Daftar</a>
+                        </li>
+                    @else
+                        <li class="nav-item dropdown ms-lg-3">
+                            <a class="btn btn-light dropdown-toggle rounded-pill px-3 shadow-sm border" href="#" role="button" data-bs-toggle="dropdown">
+                                <span class="me-1">👤</span> {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-3 rounded-4">
+                                <li>
+                                    @if(Auth::user()->role == 'admin')
+                                        <a class="dropdown-item py-2" href="/admin">Dashboard Admin</a>
+                                    @elseif(Auth::user()->role == 'owner')
+                                        <a class="dropdown-item py-2" href="/pemilik">Dashboard Pemilik</a>
+                                    @else
+                                        <a class="dropdown-item py-2" href="/customer">Dashboard Saya</a>
+                                    @endif
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item py-2 text-danger">Keluar</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endguest
                 </ul>
             </div>
         </div>
