@@ -66,9 +66,14 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->middleware(['role:admin'])->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::post('/store', [AdminController::class, 'store']);
+        Route::put('/update/{id}', [AdminController::class, 'update']);
         Route::delete('/destroy/{id}', [AdminController::class, 'destroy']);
         Route::post('/input-penyewa', [AdminController::class, 'checkIn']);
         Route::post('/konfirmasi/{id}', [AdminController::class, 'konfirmasiBooking'])->name('admin.konfirmasiBooking');
         Route::post('/confirm-payment/{id}', [AdminController::class, 'confirmPayment'])->name('admin.confirmPayment');
+        
+        // Fitur Baru: Kelola Penyewa & Laporan Keuangan
+        Route::get('/penyewa', [AdminController::class, 'kelolaPenyewa'])->name('admin.penyewa');
+        Route::get('/laporan', [AdminController::class, 'laporanKeuangan'])->name('admin.laporan');
     });
 });

@@ -13,32 +13,24 @@
     <link href="{{ asset('css/premium.css') }}" rel="stylesheet">
     
     <style>
-        :root {
-            --primary-orange: #F47B20;
-            --secondary-orange: #FF9F1C;
-            --soft-orange: #FFF4F0;
-            --sidebar-bg: #111827;
-            --sidebar-text: #9CA3AF;
-            --sidebar-active: #F47B20;
-            --bg-gray: #F9FAFB;
-        }
-
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-gray);
-            color: #111827;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
         }
 
         /* Sidebar Styling */
         #sidebar {
             min-width: 280px;
             max-width: 280px;
-            background-color: var(--sidebar-bg);
+            background-color: var(--dark-surface);
             color: white;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             position: fixed;
             z-index: 1000;
+            border-right: 1px solid var(--dark-border);
         }
 
         .sidebar-header {
@@ -47,6 +39,9 @@
             font-size: 1.5rem;
             color: var(--primary-orange);
             border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .sidebar-menu {
@@ -57,28 +52,36 @@
             display: flex;
             align-items: center;
             padding: 14px 20px;
-            color: var(--sidebar-text);
+            color: var(--dark-text-muted);
             text-decoration: none;
             border-radius: 12px;
             margin-bottom: 8px;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
         .nav-link-sidebar:hover {
             background: rgba(255,255,255,0.05);
             color: white;
+            transform: translateX(5px);
         }
 
         .nav-link-sidebar.active {
-            background: var(--primary-orange);
+            background: linear-gradient(135deg, var(--primary-orange), var(--accent-orange));
             color: white;
-            box-shadow: 0 4px 12px rgba(244, 123, 32, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
         }
 
         .nav-link-sidebar i {
             margin-right: 15px;
             width: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .nav-link-sidebar:hover i {
+            transform: scale(1.1);
         }
 
         /* Content Wrapper */
@@ -90,19 +93,44 @@
         }
 
         .top-nav {
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 15px 40px;
-            border-bottom: 1px solid #E5E7EB;
+            border-bottom: 1px solid var(--border-light);
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 900;
+            transition: all 0.3s;
+        }
+        
+        body.dark-mode .top-nav {
+            background: rgba(21, 29, 44, 0.8);
+            border-bottom-color: var(--dark-border);
         }
 
         .main-container {
             padding: 40px;
+        }
+        
+        .theme-toggle-dashboard {
+            cursor: pointer;
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            transition: 0.3s;
+        }
+        
+        body.dark-mode .theme-toggle-dashboard {
+            background: var(--dark-surface-2);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
         }
 
         @media (max-width: 992px) {
@@ -118,9 +146,11 @@
     <!-- Sidebar -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            🏠 KostKita
+            <span style="font-size: 1.8rem;">🏠</span> KostKita
         </div>
         <div class="sidebar-menu">
+            <div class="small text-uppercase fw-bold text-muted mb-3 px-3" style="letter-spacing: 1px; font-size: 10px;">Menu Utama</div>
+            
             @if(Auth::user()->role == 'admin')
                 <a href="/admin" class="nav-link-sidebar {{ Request::is('admin*') ? 'active' : '' }}">
                     <i data-lucide="layout-dashboard"></i> Dashboard
@@ -153,38 +183,53 @@
                 </a>
                 <a href="#" class="nav-link-sidebar d-flex justify-content-between align-items-center">
                     <span class="d-flex align-items-center"><i data-lucide="heart"></i> Wishlist</span>
-                    <span class="badge bg-soft-orange text-orange rounded-pill" style="font-size: 10px;">{{ Auth::user()->wishlists()->count() }}</span>
+                    <span class="badge bg-soft-orange text-orange rounded-pill shadow-sm">{{ Auth::user()->wishlists()->count() }}</span>
                 </a>
                 <a href="/customer" class="nav-link-sidebar d-flex justify-content-between align-items-center">
                     <span class="d-flex align-items-center"><i data-lucide="history"></i> Riwayat Booking</span>
-                    <span class="badge bg-light text-muted rounded-pill" style="font-size: 10px;">{{ App\Models\Booking::where('nama_penyewa', Auth::user()->name)->count() }}</span>
+                    <span class="badge bg-light text-muted rounded-pill shadow-sm">{{ App\Models\Booking::where('nama_penyewa', Auth::user()->name)->count() }}</span>
                 </a>
             @endif
             
-            <div style="margin-top: 100px;">
-                <a href="/" class="nav-link-sidebar">
-                    <i data-lucide="arrow-left"></i> Kembali ke Web
-                </a>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="nav-link-sidebar w-100 border-0 bg-transparent text-start">
-                        <i data-lucide="log-out"></i> Keluar
-                    </button>
-                </form>
-            </div>
+            <div class="small text-uppercase fw-bold text-muted mt-5 mb-3 px-3" style="letter-spacing: 1px; font-size: 10px;">Pengaturan</div>
+            
+            <a href="/" class="nav-link-sidebar">
+                <i data-lucide="arrow-left"></i> Kembali ke Web
+            </a>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="nav-link-sidebar w-100 border-0 bg-transparent text-start text-danger hover-opacity">
+                    <i data-lucide="log-out"></i> Keluar
+                </button>
+            </form>
         </div>
     </nav>
 
     <!-- Page Content -->
     <div id="content">
         <nav class="top-nav">
-            <h5 class="fw-bold mb-0 text-muted">@yield('page_title')</h5>
             <div class="d-flex align-items-center gap-3">
-                <div class="text-end d-none d-md-block">
-                    <div class="fw-bold small">{{ Auth::user()->name }}</div>
-                    <div class="text-muted extra-small" style="font-size: 10px; text-transform: uppercase;">{{ Auth::user()->role }}</div>
+                <button class="btn btn-light d-lg-none" id="sidebarToggle">
+                    <i data-lucide="menu"></i>
+                </button>
+                <h5 class="fw-bold mb-0 text-muted">@yield('page_title')</h5>
+            </div>
+            
+            <div class="d-flex align-items-center gap-4">
+                <div class="theme-toggle-dashboard" onclick="toggleDashboardTheme()" title="Toggle Dark Mode">
+                    <i data-lucide="moon" id="dash-theme-icon" size="18"></i>
                 </div>
-                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&background=F47B20&color=fff" class="rounded-circle shadow-sm" width="40">
+                
+                <div class="d-flex align-items-center gap-3 border-start ps-4">
+                    <div class="text-end d-none d-md-block">
+                        <div class="fw-bold small">{{ Auth::user()->name }}</div>
+                        <div class="text-orange fw-bold" style="font-size: 10px; text-transform: uppercase; letter-spacing: 1px;">{{ Auth::user()->role }}</div>
+                    </div>
+                    <div class="position-relative">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=FF6B00&color=fff" class="rounded-circle shadow-sm border border-2 border-white" width="45" height="45">
+                        <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle" style="width: 12px; height: 12px;"></span>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -198,6 +243,37 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
     lucide.createIcons();
+    
+    // Mobile Sidebar Toggle
+    document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+    
+    // Dark Mode Logic
+    function toggleDashboardTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        const icon = document.getElementById('dash-theme-icon');
+        if (isDark) {
+            icon.setAttribute('data-lucide', 'sun');
+        } else {
+            icon.setAttribute('data-lucide', 'moon');
+        }
+        lucide.createIcons();
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+        setTimeout(() => {
+            const icon = document.getElementById('dash-theme-icon');
+            if(icon) {
+                icon.setAttribute('data-lucide', 'sun');
+                lucide.createIcons();
+            }
+        }, 100);
+    }
 </script>
 </body>
 </html>

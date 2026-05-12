@@ -100,4 +100,28 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal verifikasi: ' . $e->getMessage());
         }
     }
+
+    public function kelolaPenyewa()
+    {
+        // Ambil booking yang sudah confirmed/paid (sedang aktif menjadi penyewa)
+        $penyewaAktif = Booking::with('unit')
+            ->where('status', 'Confirmed')
+            ->orderBy('tgl_masuk', 'desc')
+            ->get();
+            
+        return view('admin_penyewa', compact('penyewaAktif'));
+    }
+
+    public function laporanKeuangan()
+    {
+        // Hitung total pemasukan dari booking yang status pembayarannya 'Paid'
+        $transaksiSelesai = Booking::with('unit')
+            ->where('payment_status', 'Paid')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+            
+        $totalPemasukan = $transaksiSelesai->sum('total_harga');
+        
+        return view('admin_laporan', compact('transaksiSelesai', 'totalPemasukan'));
+    }
 }
