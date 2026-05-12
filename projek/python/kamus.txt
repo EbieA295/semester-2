@@ -1,0 +1,9 @@
+admin
+login
+config
+backup
+uploads
+search
+ftp
+assets
+video
