@@ -9,6 +9,7 @@ use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 // ==========================================
 // 1. OTENTIKASI (LOGIN SATU PINTU)
@@ -76,4 +77,30 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/penyewa', [AdminController::class, 'kelolaPenyewa'])->name('admin.penyewa');
         Route::get('/laporan', [AdminController::class, 'laporanKeuangan'])->name('admin.laporan');
     });
+
+
+});
+
+Route::get('/cek-bot', function () {
+    try {
+        $response = Telegram::getMe();
+        return $response;
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
+// Route untuk webhook (jika ingin menggunakan webhook)
+Route::post('/telegram/webhook', function () {
+    $update = Telegram::commandsHandler(true);
+    return 'ok';
+});
+
+Route::get('/set-webhook', function () {
+    try {
+        $response = Telegram::setWebhook(['url' => url('/telegram/webhook')]);
+        return $response;
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
 });
