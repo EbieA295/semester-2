@@ -62,7 +62,7 @@
             <div class="col-md-6">
                 <div class="card border-0 rounded-4 h-100 card-premium overflow-hidden group">
                     <div class="position-relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
+                        <img src="{{ $unit->image ? asset('storage/'.$unit->image) : ($unit->tipe == 'Premium' || $unit->tipe == 'Eksklusif' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
                         <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6)); opacity: 0; transition: opacity 0.3s;"></div>
                         
                         <span class="badge {{ $unit->status == 'Tersedia' ? 'bg-success' : 'bg-danger' }} position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm border border-white" style="z-index: 10;">

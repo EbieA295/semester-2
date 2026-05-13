@@ -36,7 +36,7 @@
             </div>
             <div class="col-lg-6 position-relative">
                 <div class="position-absolute w-100 h-100 bg-orange rounded-5" style="transform: rotate(3deg); opacity: 0.1; top: 10px; left: 10px; z-index: 0;"></div>
-                <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000" class="img-fluid rounded-5 shadow-lg position-relative z-1 animate-float" style="border: 8px solid white;" alt="Hero Image">
+                <img src="{{ asset('images/rooms/hero.png') }}" class="img-fluid rounded-5 shadow-lg position-relative z-1 animate-float" style="border: 8px solid white;" alt="Hero Image">
                 
                 <!-- Floating Card -->
                 <div class="position-absolute bg-white rounded-4 shadow-lg p-3 z-2 glass-effect animate-float" style="bottom: -20px; left: -30px; animation-delay: 1s;">
@@ -107,7 +107,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card border-0 rounded-4 shadow-sm h-100 card-premium bg-white overflow-hidden">
                 <div class="position-relative overflow-hidden group">
-                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000' }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
+                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : ($kamar->tipe == 'Premium' || $kamar->tipe == 'Eksklusif' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
                     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5)); opacity: 0; transition: opacity 0.3s;"></div>
                     
                     <span class="badge bg-white text-dark position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill shadow-sm fw-bold">
@@ -167,7 +167,7 @@
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
             <div class="row g-0">
                 <div class="col-md-6">
-                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : 'https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&q=80&w=1000' }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 300px;">
+                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : ($kamar->tipe == 'Premium' || $kamar->tipe == 'Eksklusif' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 300px;">
                 </div>
                 <div class="col-md-6 p-4 p-md-5 position-relative">
                     <button type="button" class="btn-close position-absolute top-0 end-0 m-4 bg-light rounded-circle p-2" data-bs-dismiss="modal"></button>
