@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
+        // Nama tabel diubah menjadi 'tabel_jadwals' agar sesuai dengan database kamu
         Schema::create('tabel_jadwals', function (Blueprint $table) {
             $table->id();
             $table->string('kode')->unique();
@@ -21,13 +22,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('Tabeljadwals');
+        // Sesuaikan juga di sini agar saat rollback tidak error
+        Schema::dropIfExists('tabel_jadwals');
     }
 };

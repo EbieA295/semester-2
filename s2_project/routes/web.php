@@ -48,7 +48,7 @@ Route::get('/dokter/edit/{id}', [DokterController::class, 'edit'])->name('dokter
 Route::put('/dokter/update/{id}', [DokterController::class, 'update'])->name('dokter.update');
 Route::get('/dokter/{id}', [DokterController::class, 'show'])->name('dokter.show');
 
-//Jadwal Poliklinik
+// Jadwal Poliklinik
 Route::get('/jadwalpoliklinik', [JadwalController::class, 'index'])->name('jadwalpoliklinik.index');
 Route::get('/jadwalpoliklinik/create', [JadwalController::class, 'create'])->name('jadwalpoliklinik.create');
 Route::post('/jadwalpoliklinik/add', [JadwalController::class, 'add'])->name('jadwalpoliklinik.add');

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\JadwalPoliklinik;
 use App\Models\Dokter;
@@ -10,19 +11,16 @@ class JadwalController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil parameter dari permintaan GET
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
 
-        // Inisialisasi query menggunakan MODEL, bukan Controller
         $query = JadwalPoliklinik::query();
 
-        // Filter berdasarkan rentang tanggal jika parameter ada
         if ($start_date && $end_date) {
             $query->whereBetween('tanggal_praktek', [$start_date, $end_date]);
         }
 
-        // Ambil data sesuai query
+        // Variabel compact disesuaikan agar sama dengan di view
         $jadwalpoliklinik = $query->orderBy('tanggal_praktek', 'asc')->get();
 
         return view('jadwalpoliklinik.index', compact('jadwalpoliklinik'));
@@ -37,15 +35,17 @@ class JadwalController extends Controller
     public function add(Request $request)
     {
         $request->validate([
-            'dokter_id' => 'required|exists:dokter,id',
+            // Diubah ke 'dokters' (pakai s) sesuai database kamu di image_76d699.jpg
+            'dokter_id' => 'required|exists:dokters,id',
             'tanggal_praktek' => 'required|date',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required|after:jam_mulai',
             'jumlah' => 'required|integer|min:1',
         ]);
 
         $jadwalpoliklinik = new JadwalPoliklinik();
-        $jadwalpoliklinik->kode = 'JP-' . Str::random(8);
+        // Model JadwalPoliklinik kamu sudah punya fitur auto-kode di boot(),
+        // jadi baris kode manual ini sebenarnya opsional.
         $jadwalpoliklinik->dokter_id = $request->dokter_id;
         $jadwalpoliklinik->poliklinik_id = Dokter::find($request->dokter_id)->poliklinik_id;
         $jadwalpoliklinik->tanggal_praktek = $request->tanggal_praktek;
@@ -54,7 +54,7 @@ class JadwalController extends Controller
         $jadwalpoliklinik->jumlah = $request->jumlah;
         $jadwalpoliklinik->save();
 
-        return redirect()->route('jadwalpoliklinik.index')->with('success', 'berhasil ditambahkan');
+        return redirect()->route('jadwalpoliklinik.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function edit(int $id)
@@ -67,10 +67,10 @@ class JadwalController extends Controller
     public function update(Request $request, int $id)
     {
         $request->validate([
-            'dokter_id' => 'required|exists:dokter,id',
+            'dokter_id' => 'required|exists:dokters,id',
             'tanggal_praktek' => 'required|date',
-            'jam_mulai' => 'required|date_format:H:i:s',
-            'jam_selesai' => 'required|date_format:H:i:s|after:jam_mulai',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required|after:jam_mulai',
             'jumlah' => 'required|integer|min:1',
         ]);
 
