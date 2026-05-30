@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
     // Owner (Pemilik) routes
     Route::prefix('pemilik')->middleware(['role:owner'])->group(function () {
         Route::get('/', [PemilikController::class, 'index'])->name('pemilik.dashboard');
+        Route::get('/laporan', [PemilikController::class, 'laporanKeuangan'])->name('pemilik.laporan');
+        Route::get('/laporan/cetak', [PemilikController::class, 'exportLaporan'])->name('pemilik.laporan.cetak');
     });
 
     // Admin routes
@@ -76,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
         // Fitur Baru: Kelola Penyewa & Laporan Keuangan
         Route::get('/penyewa', [AdminController::class, 'kelolaPenyewa'])->name('admin.penyewa');
         Route::get('/laporan', [AdminController::class, 'laporanKeuangan'])->name('admin.laporan');
+        Route::get('/laporan/cetak', [AdminController::class, 'exportLaporan'])->name('admin.laporan.cetak');
     });
 
 

@@ -11,9 +11,9 @@
     </div>
     <div class="position-relative z-1">
         <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
-            <i data-lucide="sliders-horizontal" class="text-orange" size="18"></i> Filter Laporan
+            <i data-lucide="sliders-horizontal" class="text-orange" size="18"></i> Filter Periode Laporan
         </h6>
-        <form action="{{ route('admin.laporan') }}" method="GET" class="row g-3 align-items-end">
+        <form action="{{ route('pemilik.laporan') }}" method="GET" class="row g-3 align-items-end">
             <div class="col-md-3">
                 <label class="small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 1px;">Mode Periode</label>
                 <select name="mode" class="form-select border-0 bg-light rounded-4 py-2" id="filterMode" onchange="toggleFilterFields()">
@@ -114,19 +114,19 @@
     </div>
 
     <div class="col-md-6 col-lg-3">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-warning">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-danger">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
-                <i data-lucide="clock" size="80" class="text-warning"></i>
+                <i data-lucide="home" size="80" class="text-danger"></i>
             </div>
             <div class="position-relative z-1">
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm border" style="width: 45px; height: 45px;">
-                        <i data-lucide="hourglass" class="text-warning" size="20"></i>
+                        <i data-lucide="building-2" class="text-danger" size="20"></i>
                     </div>
-                    <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;">Menunggu Proses</div>
+                    <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;">Okupansi</div>
                 </div>
-                <h2 class="fw-800 mb-0 text-dark">{{ $totalPending ?? 0 }} <span class="fs-6 text-muted fw-normal">Booking</span></h2>
-                <div class="small text-muted mt-2">Pending / Belum bayar</div>
+                <h2 class="fw-800 mb-0 text-dark">{{ $occupancyRate ?? 0 }}%</h2>
+                <div class="small text-muted mt-2">Tingkat hunian saat ini</div>
             </div>
         </div>
     </div>
@@ -138,7 +138,7 @@
         <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden h-100">
             <div class="p-4 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
                 <h5 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
-                    <i data-lucide="bar-chart-2" class="text-orange"></i> Grafik Pemasukan 12 Bulan
+                    <i data-lucide="bar-chart-2" class="text-orange"></i> Grafik Pemasukan 12 Bulan Terakhir
                 </h5>
             </div>
             <div class="p-4">
@@ -147,16 +147,16 @@
         </div>
     </div>
 
-    <!-- Pemasukan per Tipe -->
+    <!-- Pemasukan per Tipe Kamar + Aksi -->
     <div class="col-lg-4">
-        <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden h-100">
+        <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden mb-4">
             <div class="p-4 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
                 <h5 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
                     <i data-lucide="pie-chart" class="text-orange"></i> Per Tipe Kamar
                 </h5>
             </div>
             <div class="p-4">
-                <canvas id="chartTipe" height="260"></canvas>
+                <canvas id="chartTipe" height="200"></canvas>
                 <div class="mt-3">
                     @foreach($pemasukanPerTipe ?? [] as $pt)
                     <div class="d-flex justify-content-between align-items-center py-2 {{ !$loop->last ? 'border-bottom' : '' }}">
@@ -179,57 +179,19 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Top Unit & Aksi -->
-<div class="row g-4 mb-4">
-    <div class="col-lg-8">
-        <div class="card border-0 rounded-4 shadow-sm bg-white overflow-hidden">
-            <div class="p-4 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
-                <h5 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
-                    <i data-lucide="trophy" class="text-orange"></i> Top 5 Unit Paling Menguntungkan
-                </h5>
-            </div>
-            <div class="p-4">
-                @forelse($topUnits ?? [] as $index => $tu)
-                <div class="d-flex align-items-center justify-content-between py-3 {{ !$loop->last ? 'border-bottom' : '' }}">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-800 {{ $index == 0 ? 'text-white' : 'text-dark' }}" style="width: 40px; height: 40px; font-size: 14px; {{ $index == 0 ? 'background: linear-gradient(135deg, #FF6B00, #FF9138); box-shadow: 0 4px 10px rgba(255,107,0,0.3);' : 'background: #f1f5f9;' }}">
-                            {{ $index + 1 }}
-                        </div>
-                        <div>
-                            <div class="fw-bold text-dark">Unit {{ $tu->unit_id }}</div>
-                            <div class="extra-small text-muted">{{ $tu->total_transaksi }} transaksi selesai</div>
-                        </div>
-                    </div>
-                    <div class="text-end">
-                        <div class="fw-800 text-orange">Rp {{ number_format($tu->total_income, 0, ',', '.') }}</div>
-                    </div>
-                </div>
-                @empty
-                <div class="text-center py-4 text-muted">
-                    <i data-lucide="trophy" size="40" class="opacity-25 mb-2 d-block mx-auto"></i>
-                    <div class="small fw-medium">Belum ada data unit teratas</div>
-                </div>
-                @endforelse
-            </div>
+        <!-- Aksi Cepat -->
+        <div class="d-flex flex-column gap-3">
+            <a href="{{ route('pemilik.laporan.cetak', ['mode' => $filterMode, 'bulan' => $bulan, 'tahun' => $tahun]) }}" target="_blank" class="btn btn-orange py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 hover-shadow text-decoration-none">
+                <i data-lucide="printer" size="20"></i> Cetak Laporan (PDF)
+            </a>
+            <a href="{{ route('pemilik.dashboard') }}" class="btn btn-light border py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 hover-shadow text-dark text-decoration-none">
+                <i data-lucide="arrow-left" size="20"></i> Kembali ke Dashboard
+            </a>
         </div>
-    </div>
-
-    <div class="col-lg-4 d-flex flex-column gap-3">
-        <a href="{{ route('admin.laporan.cetak', ['mode' => $filterMode, 'bulan' => $bulan, 'tahun' => $tahun]) }}" target="_blank" class="btn btn-orange py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 hover-shadow text-decoration-none">
-            <i data-lucide="printer" size="20"></i> Cetak Laporan (PDF)
-        </a>
-        <a href="{{ route('admin.dashboard') }}" class="btn btn-light border py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 hover-shadow text-dark text-decoration-none">
-            <i data-lucide="arrow-left" size="20"></i> Kembali ke Dashboard
-        </a>
-        <a href="{{ route('admin.penyewa') }}" class="btn btn-light border py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 hover-shadow text-dark text-decoration-none">
-            <i data-lucide="users" size="20" class="text-success"></i> Kelola Penyewa
-        </a>
 
         <!-- Ringkasan Keseluruhan -->
-        <div class="card border-0 rounded-4 shadow-sm bg-white p-4 flex-grow-1">
+        <div class="card border-0 rounded-4 shadow-sm bg-white p-4 mt-3">
             <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
                 <i data-lucide="calculator" class="text-orange" size="18"></i> Total Keseluruhan
             </h6>
@@ -254,7 +216,7 @@
         <span class="badge bg-soft-orange text-orange rounded-pill px-3 py-2 shadow-sm">{{ count($transaksiSelesai ?? []) }} Data</span>
     </div>
     <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0" id="tabelTransaksi">
+        <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
                 <tr>
                     <th class="ps-4">No</th>
@@ -262,7 +224,7 @@
                     <th>Nama Penyewa</th>
                     <th>Unit</th>
                     <th>Tipe</th>
-                    <th>Status Pembayaran</th>
+                    <th>Status</th>
                     <th class="text-end pe-4">Nominal (Rp)</th>
                 </tr>
             </thead>
@@ -290,7 +252,7 @@
                     </td>
                     <td>
                         <span class="badge bg-success rounded-pill px-3 py-1 shadow-sm d-inline-flex align-items-center gap-1">
-                            <i data-lucide="check-circle" size="12"></i> Paid
+                            <i data-lucide="check-circle" size="12"></i> Lunas
                         </span>
                     </td>
                     <td class="text-end pe-4 fw-bold text-success fs-5">
@@ -310,7 +272,7 @@
             @if(count($transaksiSelesai ?? []) > 0)
             <tfoot class="table-light">
                 <tr>
-                    <td colspan="6" class="ps-4 fw-800 text-dark text-end">TOTAL</td>
+                    <td colspan="6" class="ps-4 fw-800 text-dark text-end">TOTAL PEMASUKAN</td>
                     <td class="text-end pe-4 fw-800 text-orange fs-5">Rp {{ number_format($totalPemasukan ?? 0, 0, ',', '.') }}</td>
                 </tr>
             </tfoot>
@@ -425,7 +387,7 @@
         });
     }
 
-    // Chart Tipe Kamar
+    // Chart Tipe Kamar (Doughnut)
     const tipeData = @json($pemasukanPerTipe ?? []);
     const tipeColors = ['#FF6B00', '#3B82F6', '#10B981', '#F59E0B', '#EF4444'];
     const ctx2 = document.getElementById('chartTipe');
@@ -446,9 +408,7 @@
                 maintainAspectRatio: false,
                 cutout: '65%',
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     tooltip: {
                         backgroundColor: isDarkMode ? '#1E293B' : '#fff',
                         titleColor: isDarkMode ? '#F8FAFC' : '#0F172A',

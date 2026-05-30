@@ -152,26 +152,26 @@
             <div class="small text-uppercase fw-bold text-muted mb-3 px-3" style="letter-spacing: 1px; font-size: 10px;">Menu Utama</div>
             
             @if(Auth::user()->role == 'admin')
-                <a href="/admin" class="nav-link-sidebar {{ Request::is('admin*') ? 'active' : '' }}">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link-sidebar {{ Request::is('admin') ? 'active' : '' }}">
                     <i data-lucide="layout-dashboard"></i> Dashboard
                 </a>
-                <a href="/admin" class="nav-link-sidebar">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link-sidebar">
                     <i data-lucide="home"></i> Kelola Kamar
                 </a>
-                <a href="/admin" class="nav-link-sidebar">
+                <a href="{{ route('admin.penyewa') }}" class="nav-link-sidebar {{ Request::is('admin/penyewa') ? 'active' : '' }}">
                     <i data-lucide="users"></i> Data Penyewa
                 </a>
-                <a href="/admin" class="nav-link-sidebar">
-                    <i data-lucide="credit-card"></i> Transaksi
+                <a href="{{ route('admin.laporan') }}" class="nav-link-sidebar {{ Request::is('admin/laporan*') ? 'active' : '' }}">
+                    <i data-lucide="credit-card"></i> Transaksi & Laporan
                 </a>
             @elseif(Auth::user()->role == 'owner')
-                <a href="/pemilik" class="nav-link-sidebar {{ Request::is('pemilik*') ? 'active' : '' }}">
+                <a href="{{ route('pemilik.dashboard') }}" class="nav-link-sidebar {{ Request::is('pemilik') ? 'active' : '' }}">
                     <i data-lucide="layout-dashboard"></i> Dashboard
                 </a>
-                <a href="/pemilik" class="nav-link-sidebar">
+                <a href="{{ route('pemilik.dashboard') }}" class="nav-link-sidebar">
                     <i data-lucide="home"></i> Unit Kost Saya
                 </a>
-                <a href="/pemilik" class="nav-link-sidebar">
+                <a href="{{ route('pemilik.laporan') }}" class="nav-link-sidebar {{ Request::is('pemilik/laporan*') ? 'active' : '' }}">
                     <i data-lucide="trending-up"></i> Laporan Keuangan
                 </a>
             @else

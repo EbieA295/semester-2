@@ -7,7 +7,7 @@
 <!-- Header Stats -->
 <div class="row g-4 mb-5">
     <div class="col-md-3">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #FFF4F0 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-warning">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="home" size="80" class="text-orange"></i>
             </div>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #ECFDF5 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-success">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="check-circle" size="80" class="text-success"></i>
             </div>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #FEF2F2 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-danger">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="user-check" size="80" class="text-danger"></i>
             </div>
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #EFF6FF 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-info">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="clock" size="80" class="text-primary"></i>
             </div>
@@ -256,9 +256,9 @@
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">TIPE KAMAR</label>
                         <select name="tipe" class="form-select form-select-lg border-0 bg-light rounded-4" required>
-                            <option value="Reguler">Reguler</option>
+                            <option value="Hemat">Hemat</option>
+                            <option value="Standar">Standar</option>
                             <option value="Premium">Premium</option>
-                            <option value="Eksklusif">Eksklusif</option>
                         </select>
                     </div>
                     <div class="mb-4">
@@ -304,9 +304,9 @@
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-muted text-uppercase" style="letter-spacing: 1px;">TIPE KAMAR</label>
                         <select id="edit_tipe" name="tipe" class="form-select form-select-lg border-0 bg-light rounded-4" required>
-                            <option value="Reguler">Reguler</option>
+                            <option value="Hemat">Hemat</option>
+                            <option value="Standar">Standar</option>
                             <option value="Premium">Premium</option>
-                            <option value="Eksklusif">Eksklusif</option>
                         </select>
                     </div>
                     <div class="mb-4">
@@ -430,6 +430,29 @@
             if (data.success) { location.reload(); }
             else { alert('Gagal: ' + data.message); }
         });
+    });
+
+    // Auto-set harga berdasarkan tipe kamar
+    function setHargaOtomatis(selectElement, inputId) {
+        const tipe = selectElement.value;
+        const inputHarga = document.getElementById(inputId) || document.querySelector(`input[name="harga"]`);
+        if (tipe === 'Hemat') {
+            inputHarga.value = 500000;
+        } else if (tipe === 'Standar') {
+            inputHarga.value = 800000;
+        } else if (tipe === 'Premium') {
+            inputHarga.value = 1200000;
+        }
+    }
+
+    // Listener untuk Tambah Unit
+    document.querySelector('#modalTambahUnit select[name="tipe"]').addEventListener('change', function() {
+        setHargaOtomatis(this, null);
+    });
+
+    // Listener untuk Edit Unit
+    document.getElementById('edit_tipe').addEventListener('change', function() {
+        setHargaOtomatis(this, 'edit_harga');
     });
 </script>
 

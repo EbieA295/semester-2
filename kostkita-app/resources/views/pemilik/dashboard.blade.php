@@ -7,7 +7,7 @@
 <!-- Header Stats -->
 <div class="row g-4 mb-5">
     <div class="col-md-3" data-aos="fade-up">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #ECFDF5 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-success">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="wallet" size="80" class="text-success"></i>
             </div>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #FFF4F0 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-warning">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="door-open" size="80" class="text-orange"></i>
             </div>
@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #FEF2F2 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-danger">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="users" size="80" class="text-danger"></i>
             </div>
@@ -55,7 +55,7 @@
         </div>
     </div>
     <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
-        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow" style="background: linear-gradient(135deg, #EFF6FF 0%, #ffffff 100%);">
+        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 position-relative overflow-hidden group hover-shadow card-gradient-info">
             <div class="position-absolute top-0 end-0 p-3 opacity-25 transition-all group-hover-scale">
                 <i data-lucide="bell" size="80" class="text-primary"></i>
             </div>
@@ -185,9 +185,9 @@
                 <h4 class="fw-800 mb-1">90%</h4>
                 <p class="small text-muted mb-0">Tingkat Retensi Penyewa</p>
             </div>
-            <button class="btn btn-orange w-100 py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 transition-all hover-shadow" onclick="alert('Fitur laporan PDF sedang dalam pengembangan!')">
+            <a href="{{ route('pemilik.laporan.cetak') }}" target="_blank" class="btn btn-orange w-100 py-3 rounded-4 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-2 transition-all hover-shadow text-decoration-none">
                 <i data-lucide="download" size="20"></i> UNDUH LAPORAN PDF
-            </button>
+            </a>
         </div>
 
         <div class="card border-0 rounded-4 shadow-sm bg-white p-4 overflow-hidden position-relative" data-aos="fade-up">

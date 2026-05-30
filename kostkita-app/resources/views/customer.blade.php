@@ -25,8 +25,9 @@
                     <span class="input-group-text bg-light border-0 rounded-start-4 ps-4"><i data-lucide="users" size="18" class="text-muted"></i></span>
                     <select name="tipe" class="form-select border-0 bg-light py-3 rounded-end-4">
                         <option value="Semua Tipe">Semua Tipe</option>
-                        <option value="Putra" {{ request('tipe') == 'Putra' ? 'selected' : '' }}>Putra</option>
-                        <option value="Putri" {{ request('tipe') == 'Putri' ? 'selected' : '' }}>Putri</option>
+                        <option value="Hemat" {{ request('tipe') == 'Hemat' ? 'selected' : '' }}>Hemat</option>
+                        <option value="Standar" {{ request('tipe') == 'Standar' ? 'selected' : '' }}>Standar</option>
+                        <option value="Premium" {{ request('tipe') == 'Premium' ? 'selected' : '' }}>Premium</option>
                     </select>
                 </div>
             </div>
@@ -62,7 +63,7 @@
             <div class="col-md-6">
                 <div class="card border-0 rounded-4 h-100 card-premium overflow-hidden group">
                     <div class="position-relative overflow-hidden">
-                        <img src="{{ $unit->image ? asset('storage/'.$unit->image) : ($unit->tipe == 'Premium' || $unit->tipe == 'Eksklusif' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
+                        <img src="{{ $unit->image ? asset('storage/'.$unit->image) : ($unit->tipe == 'Premium' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
                         <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6)); opacity: 0; transition: opacity 0.3s;"></div>
                         
                         <span class="badge {{ $unit->status == 'Tersedia' ? 'bg-success' : 'bg-danger' }} position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill shadow-sm border border-white" style="z-index: 10;">
@@ -86,9 +87,14 @@
                         </div>
                         <p class="text-muted small mb-3">Tipe: <span class="fw-bold">{{ $unit->tipe }}</span></p>
                         
-                        <div class="d-flex gap-2 mb-4">
-                            <div class="badge bg-light text-dark fw-medium rounded-pill px-3 py-1 border d-flex align-items-center gap-1"><i data-lucide="wind" size="12"></i> AC</div>
-                            <div class="badge bg-light text-dark fw-medium rounded-pill px-3 py-1 border d-flex align-items-center gap-1"><i data-lucide="wifi" size="12"></i> WiFi</div>
+                        <div class="d-flex gap-2 mb-4 flex-wrap">
+                            @if($unit->tipe == 'Premium')
+                                <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="wind" size="12" class="me-1"></i> AC</span>
+                                <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="wifi" size="12" class="me-1"></i> WiFi</span>
+                            @endif
+                            <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="bath" size="12" class="me-1"></i> K.Mandi</span>
+                            <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="bed-single" size="12" class="me-1"></i> Kasur</span>
+                            <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="layout-grid" size="12" class="me-1"></i> Lemari</span>
                         </div>
 
                         <div class="d-flex justify-content-between align-items-end mt-auto pt-3 border-top">

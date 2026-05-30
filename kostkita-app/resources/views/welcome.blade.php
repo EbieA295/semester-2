@@ -72,9 +72,9 @@
                     <span class="input-group-text bg-light border-0 rounded-start-4 ps-4"><i data-lucide="home" size="20" class="text-muted"></i></span>
                     <select name="tipe" class="form-select bg-light border-0 py-3 rounded-end-4">
                         <option value="Semua Tipe">Semua Tipe</option>
-                        <option value="Reguler" {{ request('tipe') == 'Reguler' ? 'selected' : '' }}>Reguler</option>
+                        <option value="Hemat" {{ request('tipe') == 'Hemat' ? 'selected' : '' }}>Hemat</option>
+                        <option value="Standar" {{ request('tipe') == 'Standar' ? 'selected' : '' }}>Standar</option>
                         <option value="Premium" {{ request('tipe') == 'Premium' ? 'selected' : '' }}>Premium</option>
-                        <option value="Eksklusif" {{ request('tipe') == 'Eksklusif' ? 'selected' : '' }}>Eksklusif</option>
                     </select>
                 </div>
             </div>
@@ -107,7 +107,7 @@
         <div class="col-lg-4 col-md-6">
             <div class="card border-0 rounded-4 shadow-sm h-100 card-premium bg-white overflow-hidden">
                 <div class="position-relative overflow-hidden group">
-                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : ($kamar->tipe == 'Premium' || $kamar->tipe == 'Eksklusif' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
+                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : ($kamar->tipe == 'Premium' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="card-img-top" style="height: 220px; object-fit: cover; transition: transform 0.5s;">
                     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5)); opacity: 0; transition: opacity 0.3s;"></div>
                     
                     <span class="badge bg-white text-dark position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill shadow-sm fw-bold">
@@ -132,9 +132,14 @@
                         <i data-lucide="map-pin" size="14" class="text-orange"></i> {{ $kamar->lokasi }}
                     </p>
                     
-                    <div class="d-flex gap-2 mb-4">
-                        <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="wifi" size="12" class="me-1"></i> WiFi</span>
-                        <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="wind" size="12" class="me-1"></i> AC</span>
+                    <div class="d-flex gap-2 mb-4 flex-wrap">
+                        @if($kamar->tipe == 'Premium')
+                            <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="wind" size="12" class="me-1"></i> AC</span>
+                            <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="wifi" size="12" class="me-1"></i> WiFi</span>
+                        @endif
+                        <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="bath" size="12" class="me-1"></i> K.Mandi</span>
+                        <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="bed-single" size="12" class="me-1"></i> Kasur</span>
+                        <span class="badge bg-light text-dark fw-medium rounded-pill px-2 py-1 border"><i data-lucide="layout-grid" size="12" class="me-1"></i> Lemari</span>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-end pt-3 border-top mt-auto">
@@ -167,7 +172,7 @@
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
             <div class="row g-0">
                 <div class="col-md-6">
-                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : ($kamar->tipe == 'Premium' || $kamar->tipe == 'Eksklusif' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 300px;">
+                    <img src="{{ $kamar->image ? asset('storage/'.$kamar->image) : ($kamar->tipe == 'Premium' ? asset('images/rooms/premium.png') : asset('images/rooms/standard.png')) }}" class="img-fluid h-100 w-100" style="object-fit: cover; min-height: 300px;">
                 </div>
                 <div class="col-md-6 p-4 p-md-5 position-relative">
                     <button type="button" class="btn-close position-absolute top-0 end-0 m-4 bg-light rounded-circle p-2" data-bs-dismiss="modal"></button>
@@ -179,9 +184,21 @@
                     <div class="mb-4">
                         <h6 class="fw-bold small text-uppercase text-muted mb-3">Fasilitas</h6>
                         <div class="d-flex flex-wrap gap-2">
-                            <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="wifi" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">WiFi 50Mbps</div></div>
-                            <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="wind" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">AC Dingin</div></div>
-                            <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="tv" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Smart TV</div></div>
+                            @if($kamar->tipe == 'Premium')
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="wind" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">AC</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="wifi" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">WiFi</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="bed-double" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Spring Bed</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="bath" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">KM. Dalam</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="layout-grid" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Lemari</div></div>
+                            @elseif($kamar->tipe == 'Standar')
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="bed-single" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Kasur</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="bath" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">KM. Dalam</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="layout-grid" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Lemari</div></div>
+                            @else
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="bed-single" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Kasur</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="bath" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Kamar Mandi</div></div>
+                                <div class="border rounded-3 px-3 py-2 text-center flex-grow-1"><i data-lucide="layout-grid" size="20" class="mb-1 text-muted"></i><div class="extra-small fw-bold">Lemari</div></div>
+                            @endif
                         </div>
                     </div>
 
